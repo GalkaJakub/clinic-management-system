@@ -38,19 +38,19 @@ namespace Clinic.Data
                 .HasForeignKey(x => x.AppointmentId);
 
             modelBuilder.Entity<Doctor>().HasData(
-                new Doctor {UserId= 1, Name = "Jakub", Surname= "Gałka", UserType=UserType.Doctor, NPWZ = 32 }
+                new Doctor {UserId= 1, Name = "Jakub", Surname= "Gałka", UserType=UserType.Doctor, NPWZ = 32 ,PasswordHash = "user1" }
                 );
             modelBuilder.Entity<Receptionist>().HasData(
-                new Receptionist { UserId = 2, Name = "Wiktor", Surname = "Gruszka", UserType = UserType.Receptionist}
+                new Receptionist { UserId = 2, Name = "Wiktor", Surname = "Gruszka", UserType = UserType.Receptionist, PasswordHash = "user2" }
                 );
             modelBuilder.Entity<HeadLabTechnician>().HasData(
-                new HeadLabTechnician { UserId = 3, Name = "Jakub", Surname = "Gnela", UserType = UserType.HeadLab }
+                new HeadLabTechnician { UserId = 3, Name = "Jakub", Surname = "Gnela", UserType = UserType.HeadLab, PasswordHash = "user3" }
                 );
             modelBuilder.Entity<LabTechnician>().HasData(
-                new LabTechnician { UserId = 4, Name = "Kacper", Surname = "Czerniak", UserType = UserType.Lab }
+                new LabTechnician { UserId = 4, Name = "Kacper", Surname = "Czerniak", UserType = UserType.Lab, PasswordHash = "user4" }
                 );
             modelBuilder.Entity<Admin>().HasData(
-            new Admin { UserId = 5, Name = "Michał", Surname = "Sikora", UserType = UserType.Admin }
+            new Admin { UserId = 5, Name = "Michał", Surname = "Sikora", UserType = UserType.Admin, PasswordHash = "user5" }
             );
         }
     }
