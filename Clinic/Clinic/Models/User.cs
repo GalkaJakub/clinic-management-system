@@ -9,7 +9,7 @@ namespace Clinic.Models
         public int UserId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public UserType? Type { get; set; }
+        public UserType? UserType { get; set; }
 
     }
 }

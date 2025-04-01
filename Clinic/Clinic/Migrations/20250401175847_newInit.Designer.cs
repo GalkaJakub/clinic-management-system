@@ -4,6 +4,7 @@ using Clinic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clinic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250401175847_newInit")]
+    partial class newInit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -244,7 +247,7 @@ namespace Clinic.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserType")
+                    b.Property<int?>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("UserId");
@@ -261,15 +264,6 @@ namespace Clinic.Migrations
                     b.HasBaseType("Clinic.Models.User");
 
                     b.HasDiscriminator().HasValue("Admin");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 5,
-                            Name = "Michał",
-                            Surname = "Sikora",
-                            UserType = 1
-                        });
                 });
 
             modelBuilder.Entity("Clinic.Models.Doctor", b =>
@@ -280,16 +274,6 @@ namespace Clinic.Migrations
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("Doctor");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            Name = "Jakub",
-                            Surname = "Gałka",
-                            UserType = 0,
-                            NPWZ = 32
-                        });
                 });
 
             modelBuilder.Entity("Clinic.Models.HeadLabTechnician", b =>
@@ -297,15 +281,6 @@ namespace Clinic.Migrations
                     b.HasBaseType("Clinic.Models.User");
 
                     b.HasDiscriminator().HasValue("HeadLabTechnician");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 3,
-                            Name = "Jakub",
-                            Surname = "Gnela",
-                            UserType = 3
-                        });
                 });
 
             modelBuilder.Entity("Clinic.Models.LabTechnician", b =>
@@ -313,15 +288,6 @@ namespace Clinic.Migrations
                     b.HasBaseType("Clinic.Models.User");
 
                     b.HasDiscriminator().HasValue("LabTechnician");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 4,
-                            Name = "Kacper",
-                            Surname = "Czerniak",
-                            UserType = 2
-                        });
                 });
 
             modelBuilder.Entity("Clinic.Models.Receptionist", b =>
@@ -329,15 +295,6 @@ namespace Clinic.Migrations
                     b.HasBaseType("Clinic.Models.User");
 
                     b.HasDiscriminator().HasValue("Receptionist");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 2,
-                            Name = "Wiktor",
-                            Surname = "Gruszka",
-                            UserType = 4
-                        });
                 });
 
             modelBuilder.Entity("Clinic.Models.Appointment", b =>
