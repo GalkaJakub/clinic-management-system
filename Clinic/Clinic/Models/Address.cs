@@ -10,6 +10,7 @@ namespace Clinic.Models
         public string Street { get; set; }
         public int HomeNumber { get; set; }
         public int ApartNumber { get; set; }
+        public Patient Patient { get; set; }
 
     }
 }
