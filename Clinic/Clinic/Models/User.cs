@@ -10,7 +10,6 @@ namespace Clinic.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public string PasswordHash { get; set; }
-        public UserType? UserType { get; set; }
 
     }
 }

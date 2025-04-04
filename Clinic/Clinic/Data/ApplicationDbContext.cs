@@ -37,20 +37,28 @@ namespace Clinic.Data
                 .WithMany(x => x.PhysicalExams)
                 .HasForeignKey(x => x.AppointmentId);
 
+            modelBuilder.Entity<ExamSelection>().Property(x => x.Type).HasConversion<string>();
+            modelBuilder.Entity<Appointment>().Property(x => x.Status).HasConversion<string>();
+            modelBuilder.Entity<LabExam>().Property(x => x.Status).HasConversion<string>();
+
+            modelBuilder.Entity<ExamSelection>().HasData(
+                new ExamSelection { Shortcut = "krew", Name = "Pobieranie krwi", Type=ExamType.Lab},
+                new ExamSelection { Shortcut = "cukier", Name = "Sprawdzenie poziomu cukru we krwi", Type=ExamType.Physical}
+                );
             modelBuilder.Entity<Doctor>().HasData(
-                new Doctor {UserId= 1, Name = "Jakub", Surname= "Gałka", UserType=UserType.Doctor, NPWZ = 32 ,PasswordHash = "user1" }
+                new Doctor {UserId= 1, Name = "Jakub", Surname= "Gałka", NPWZ = 32 ,PasswordHash = "user1" }
                 );
             modelBuilder.Entity<Receptionist>().HasData(
-                new Receptionist { UserId = 2, Name = "Wiktor", Surname = "Gruszka", UserType = UserType.Receptionist, PasswordHash = "user2" }
+                new Receptionist { UserId = 2, Name = "Wiktor", Surname = "Gruszka", PasswordHash = "user2" }
                 );
             modelBuilder.Entity<HeadLabTechnician>().HasData(
-                new HeadLabTechnician { UserId = 3, Name = "Jakub", Surname = "Gnela", UserType = UserType.HeadLab, PasswordHash = "user3" }
+                new HeadLabTechnician { UserId = 3, Name = "Jakub", Surname = "Gnela", PasswordHash = "user3" }
                 );
             modelBuilder.Entity<LabTechnician>().HasData(
-                new LabTechnician { UserId = 4, Name = "Kacper", Surname = "Czerniak", UserType = UserType.Lab, PasswordHash = "user4" }
+                new LabTechnician { UserId = 4, Name = "Kacper", Surname = "Czerniak", PasswordHash = "user4" }
                 );
             modelBuilder.Entity<Admin>().HasData(
-            new Admin { UserId = 5, Name = "Michał", Surname = "Sikora", UserType = UserType.Admin, PasswordHash = "user5" }
+            new Admin { UserId = 5, Name = "Michał", Surname = "Sikora", PasswordHash = "user5" }
             );
         }
     }

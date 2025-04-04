@@ -6,7 +6,8 @@ namespace Clinic.Models
     public class ExamSelection
     {
         [Key]
-        public int ExamSelectionId { get; set; }
+        [MaxLength(10)]
+        public string Shortcut { get; set; }
         public ExamType Type { get; set; }
         public string? Name { get; set; }
     }

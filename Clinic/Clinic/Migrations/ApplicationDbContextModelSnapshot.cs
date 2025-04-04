@@ -79,8 +79,9 @@ namespace Clinic.Migrations
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AppointemntId");
 
@@ -95,21 +96,34 @@ namespace Clinic.Migrations
 
             modelBuilder.Entity("Clinic.Models.ExamSelection", b =>
                 {
-                    b.Property<int>("ExamSelectionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExamSelectionId"));
+                    b.Property<string>("Shortcut")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ExamSelectionId");
+                    b.HasKey("Shortcut");
 
                     b.ToTable("ExamSelections");
+
+                    b.HasData(
+                        new
+                        {
+                            Shortcut = "krew",
+                            Name = "Pobieranie krwi",
+                            Type = "Lab"
+                        },
+                        new
+                        {
+                            Shortcut = "cukier",
+                            Name = "Sprawdzenie poziomu cukru we krwi",
+                            Type = "Physical"
+                        });
                 });
 
             modelBuilder.Entity("Clinic.Models.LabExam", b =>
@@ -135,6 +149,10 @@ namespace Clinic.Migrations
                     b.Property<int>("ExamSelectionId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ExamSelectionShortcut")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<string>("HeadLabNotes")
                         .HasColumnType("nvarchar(max)");
 
@@ -150,14 +168,15 @@ namespace Clinic.Migrations
                     b.Property<string>("Result")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("LabExamId");
 
                     b.HasIndex("AppointmentId");
 
-                    b.HasIndex("ExamSelectionId");
+                    b.HasIndex("ExamSelectionShortcut");
 
                     b.HasIndex("HeadLabTechnicianId");
 
@@ -211,6 +230,10 @@ namespace Clinic.Migrations
                     b.Property<int>("ExamSelectionId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ExamSelectionShortcut")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<string>("Result")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -219,7 +242,7 @@ namespace Clinic.Migrations
 
                     b.HasIndex("AppointmentId");
 
-                    b.HasIndex("ExamSelectionId");
+                    b.HasIndex("ExamSelectionShortcut");
 
                     b.ToTable("PhysicalExams");
                 });
@@ -249,9 +272,6 @@ namespace Clinic.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserType")
-                        .HasColumnType("int");
-
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
@@ -273,8 +293,7 @@ namespace Clinic.Migrations
                             UserId = 5,
                             Name = "Michał",
                             PasswordHash = "user5",
-                            Surname = "Sikora",
-                            UserType = 1
+                            Surname = "Sikora"
                         });
                 });
 
@@ -294,7 +313,6 @@ namespace Clinic.Migrations
                             Name = "Jakub",
                             PasswordHash = "user1",
                             Surname = "Gałka",
-                            UserType = 0,
                             NPWZ = 32
                         });
                 });
@@ -311,8 +329,7 @@ namespace Clinic.Migrations
                             UserId = 3,
                             Name = "Jakub",
                             PasswordHash = "user3",
-                            Surname = "Gnela",
-                            UserType = 3
+                            Surname = "Gnela"
                         });
                 });
 
@@ -328,8 +345,7 @@ namespace Clinic.Migrations
                             UserId = 4,
                             Name = "Kacper",
                             PasswordHash = "user4",
-                            Surname = "Czerniak",
-                            UserType = 2
+                            Surname = "Czerniak"
                         });
                 });
 
@@ -345,8 +361,7 @@ namespace Clinic.Migrations
                             UserId = 2,
                             Name = "Wiktor",
                             PasswordHash = "user2",
-                            Surname = "Gruszka",
-                            UserType = 4
+                            Surname = "Gruszka"
                         });
                 });
 
@@ -387,7 +402,7 @@ namespace Clinic.Migrations
 
                     b.HasOne("Clinic.Models.ExamSelection", "ExamSelection")
                         .WithMany()
-                        .HasForeignKey("ExamSelectionId")
+                        .HasForeignKey("ExamSelectionShortcut")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -433,7 +448,7 @@ namespace Clinic.Migrations
 
                     b.HasOne("Clinic.Models.ExamSelection", "ExamSelection")
                         .WithMany()
-                        .HasForeignKey("ExamSelectionId")
+                        .HasForeignKey("ExamSelectionShortcut")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
