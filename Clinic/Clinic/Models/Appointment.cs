@@ -13,13 +13,13 @@ namespace Clinic.Models
         public DateTime RegistrationDate { get; set; }
         public DateTime? AppointmentDate { get; set; }
         public int DoctorId { get; set; }
-        public Doctor Doctor { get; set; }
+        public Doctor? Doctor { get; set; }
         public int PatientId { get; set; }
-        public Patient Patient { get; set; }
+        public Patient? Patient { get; set; }
         public int ReceptionistId { get; set; }
-        public Receptionist Receptionist { get; set; }
-        public ICollection<LabExam> LabExams { get; set; }
-        public ICollection<PhysicalExam> PhysicalExams { get; set; }
+        public Receptionist? Receptionist { get; set; }
+        public ICollection<LabExam>? LabExams { get; set; }
+        public ICollection<PhysicalExam>? PhysicalExams { get; set; }
 
     }
 }

@@ -20,7 +20,7 @@ namespace Clinic.Models
         public LabTechnician LabTechnician { get; set; }
         public int HeadLabTechnicianId { get; set; }
         public HeadLabTechnician HeadLabTechnician { get; set; }
-        public int ExamSelectionId { get; set; }
+        public string ExamSelectionId { get; set; }
         public ExamSelection ExamSelection { get; set; }
 
     }
