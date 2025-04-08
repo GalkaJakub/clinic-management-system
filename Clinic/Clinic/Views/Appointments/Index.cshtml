@@ -1,0 +1,35 @@
+﻿@model List<Appointment>
+
+<div class="container mt-4">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h3 class="mb-4">Appointments</h3>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <a asp-controller="Appointments" asp-action="Create" class="btn btn-primary">Add Appointment</a>
+        </div>
+
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover table-striped align-middle border rounded">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Patient</th>
+                    <th scope="col">Doctor</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var appointment in Model)
+                {
+                    <tr>
+                        <td>@(appointment.Patient.Name) @(appointment.Patient.Surname)</td>
+                        <td>@(appointment.Doctor.Name) @(appointment.Doctor.Surname)</td>
+                        <td>@((appointment.AppointmentDate))</td>
+                        <td>@appointment.Status</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
