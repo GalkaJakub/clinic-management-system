@@ -6,17 +6,22 @@
             <h3 class="mb-4">Appointments</h3>
         </div>
         <div class="col-md-6 text-md-end">
-            <a asp-controller="Appointments" asp-action="Create" class="btn btn-primary">Add Appointment</a>
+            <a asp-controller="Appointments" asp-action="CreateAppointment" class="btn btn-primary">New appointment</a>
         </div>
 
-    <div class="table-responsive shadow-sm rounded">
-        <table class="table table-hover table-striped align-middle border rounded">
+        <div class="table-responsive shadow-sm rounded mb-4" style="text-align: center">
+            <a>Here will be filters field</a>
+        </div>
+    <div class="table-responsive shadow-sm rounded" >
+        <table class="table table-hover table-striped align-middle border rounded mt-4 mb-4">
             <thead class="table-light">
                 <tr>
                     <th scope="col">Patient</th>
+                    <th scope="col">Description</th>
                     <th scope="col">Doctor</th>
                     <th scope="col">Date</th>
                     <th scope="col">Status</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -24,9 +29,19 @@
                 {
                     <tr>
                         <td>@(appointment.Patient.Name) @(appointment.Patient.Surname)</td>
+                            <td>@(appointment.Description.Length > 50 ? appointment.Description.Substring(0, 50) + "..." : appointment.Description)</td>
                         <td>@(appointment.Doctor.Name) @(appointment.Doctor.Surname)</td>
-                        <td>@((appointment.AppointmentDate))</td>
+                        <td>@((appointment.AppointmentDate.Value.ToString("g")))</td>
                         <td>@appointment.Status</td>
+                            <td>
+                                <a asp-action="UpdateAppointment" asp-route-appointmentId="@appointment.AppointemntId"
+                                   class="btn btn-info">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a asp-action="DeleteAppointment" asp-route-appointmentId="@appointment.AppointemntId" 
+                                class="btn btn-danger">
+                                <i class="bi bi-trash-fill"></i></a>
+                            </td>
                     </tr>
                 }
             </tbody>

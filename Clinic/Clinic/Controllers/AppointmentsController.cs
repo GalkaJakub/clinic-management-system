@@ -22,7 +22,7 @@ namespace Clinic.Controllers
             return View(appointments);
         }
 
-        public IActionResult Create()
+        public IActionResult CreateAppointment()
         {
             var model = new AppointmentVM
             {
@@ -34,7 +34,7 @@ namespace Clinic.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(AppointmentVM model)
+        public IActionResult CreateAppointment(AppointmentVM model)
         {
             if (ModelState.IsValid)
             {
@@ -44,21 +44,59 @@ namespace Clinic.Controllers
                 model.Appointment.ReceptionistId = db.Receptionists.First().UserId;
                 db.Appointments.Add(model.Appointment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             model.Patients = db.Patients.ToList();
             model.Doctors = db.Doctors.ToList();
             return View(model);
         }
 
-        public IActionResult Edit()
+        public IActionResult UpdateAppointment(int appointmentId)
         {
-            return View();
+            var appointment = db.Appointments.Find(appointmentId);
+            if (appointment == null)
+                return NotFound();
+            var model = new AppointmentVM
+            {
+                Appointment = appointment,
+                Doctors = db.Doctors.ToList(),
+                Patients = db.Patients.ToList(),
+            };
+
+            return View(model);
         }
 
-        public IActionResult Delete()
+        [HttpPost]
+        public IActionResult UpdateAppointment(AppointmentVM model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var newAppointment = model.Appointment;
+                var appointment = db.Appointments.Find(newAppointment.AppointemntId);
+                if (appointment != null)
+                {
+                    appointment.AppointmentDate = newAppointment.AppointmentDate;
+                    appointment.DoctorId = newAppointment.DoctorId;
+                    appointment.Description = newAppointment.Description;
+                    appointment.PatientId = newAppointment.PatientId;
+                    db.SaveChanges();
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            model.Patients = db.Patients.ToList();
+            model.Doctors = db.Doctors.ToList();
+            return View(model);
+        }
+
+        public IActionResult DeleteAppointment(int appointmentId)
+        {
+            var appointment = db.Appointments.Find(appointmentId);
+            if (appointment != null)
+            {
+                db.Appointments.Remove(appointment);
+                db.SaveChanges();
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
