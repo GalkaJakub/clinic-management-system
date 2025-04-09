@@ -4,6 +4,7 @@ using Clinic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clinic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250409145353_addres_typo_correction")]
+    partial class addres_typo_correction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -313,9 +316,6 @@ namespace Clinic.Migrations
                     b.Property<int>("AddressId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AddressId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -331,11 +331,8 @@ namespace Clinic.Migrations
 
                     b.HasKey("PatientId");
 
-                    b.HasIndex("AddressId");
-
-                    b.HasIndex("AddressId1")
-                        .IsUnique()
-                        .HasFilter("[AddressId1] IS NOT NULL");
+                    b.HasIndex("AddressId")
+                        .IsUnique();
 
                     b.ToTable("Patients");
 
@@ -619,14 +616,10 @@ namespace Clinic.Migrations
             modelBuilder.Entity("Clinic.Models.Patient", b =>
                 {
                     b.HasOne("Clinic.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
+                        .WithOne("Patient")
+                        .HasForeignKey("Clinic.Models.Patient", "AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Clinic.Models.Address", null)
-                        .WithOne("Patient")
-                        .HasForeignKey("Clinic.Models.Patient", "AddressId1");
 
                     b.Navigation("Address");
                 });

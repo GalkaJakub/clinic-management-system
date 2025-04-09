@@ -22,15 +22,15 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="Patient.AdressId" class="form-label">Adress</label>
-        <select asp-for="Patient.AdressId" class="form-select w-100">
-            <option value="">Choose an adress</option>
+        <label asp-for="Patient.AddressId" class="form-label">Address</label>
+        <select asp-for="Patient.AddressId" class="form-select w-100">
+            <option value="">Choose an address</option>
             @foreach (var adress in Model.Addresses)
             {
-                <option value="@adress.AdressId">@(adress.City) @(adress.Street) @(adress.HomeNumber) @(adress.ApartNumber)</option>
+                <option value="@adress.AddressId">@(adress.City) @(adress.Street) @(adress.HomeNumber) @(adress.ApartNumber)</option>
             }
         </select>
-        <span asp-validation-for="Patient.AdressId" class="text-danger"></span>
+        <span asp-validation-for="Patient.AddressId" class="text-danger"></span>
     </div>
 
     <div class="row">
