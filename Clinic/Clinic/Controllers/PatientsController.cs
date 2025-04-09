@@ -4,6 +4,7 @@ using Clinic.Models;
 using Clinic.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Clinic.Controllers
 {
@@ -17,9 +18,16 @@ namespace Clinic.Controllers
             this.db = db;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchString)
         {
             var patients = db.Patients.Include(x => x.Adress).ToList();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                patients = patients.Where(x => x.Name.Contains(searchString)
+                || x.Surname.Contains(searchString)).ToList();
+            }
+
             return View(patients);
         }
 
