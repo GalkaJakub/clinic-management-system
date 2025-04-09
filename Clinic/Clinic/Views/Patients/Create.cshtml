@@ -1,0 +1,44 @@
+﻿@using Clinic.Models.ViewModels
+@model PatientVM
+<h1>Add a Patient</h1>
+
+
+<form method="post" asp-controller="Patients" asp-action="Create">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="mb-3">
+        <label asp-for="Patient.Name" class="form-label">Name</label>
+        <input asp-for="Patient.Name" type="Text" class="form-control">
+        <span asp-validation-for="Patient.Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Patient.Surname" class="form-label">Surname</label>
+        <input asp-for="Patient.Surname" type="Text" class="form-control">
+        <span asp-validation-for="Patient.Surname" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Patient.PESEL" class="form-label">PESEL</label>
+        <input asp-for="Patient.PESEL" type="Text" class="form-control">
+        <span asp-validation-for="Patient.PESEL" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Patient.AdressId" class="form-label">Adress</label>
+        <select asp-for="Patient.AdressId" class="form-select w-100">
+            <option value="">Choose an adress</option>
+            @foreach (var adress in Model.Addresses)
+            {
+                <option value="@adress.AdressId">@(adress.City) @(adress.Street) @(adress.HomeNumber) @(adress.ApartNumber)</option>
+            }
+        </select>
+        <span asp-validation-for="Patient.AdressId" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-6 text-start">
+            <a asp-action="Index" class="btn btn-secondary">Return</a>
+        </div>
+        <div class="col-6 text-end">
+            <input type="submit" class="btn btn-primary" value="Save" />
+        </div>
+    </div>
+</form>
