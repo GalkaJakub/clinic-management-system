@@ -33,7 +33,7 @@
             <option value="">Choose a doctor</option>
             @foreach (var doctor in Model.Doctors)
             {
-                <option value="@doctor.UserId">@(doctor.Name) @(doctor.Surname)</option>
+                <option value="@doctor.ApplicationUser.Id">@(doctor.ApplicationUser.Name) @(doctor.ApplicationUser.Surname)</option>
             }
         </select>
         <span asp-validation-for="Appointment.DoctorId" class="text-danger"></span>

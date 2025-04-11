@@ -30,7 +30,7 @@
                     <tr>
                         <td>@(appointment.Patient.Name) @(appointment.Patient.Surname)</td>
                             <td>@(appointment.Description.Length > 50 ? appointment.Description.Substring(0, 50) + "..." : appointment.Description)</td>
-                        <td>@(appointment.Doctor.Name) @(appointment.Doctor.Surname)</td>
+                        <td>@(appointment.Doctor.ApplicationUser.Name) @(appointment.Doctor.ApplicationUser.Surname)</td>
                         <td>@((appointment.AppointmentDate.Value.ToString("g")))</td>
                         <td>@appointment.Status</td>
                             <td>

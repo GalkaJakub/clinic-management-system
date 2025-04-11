@@ -41,7 +41,7 @@ namespace Clinic.Controllers
                 model.Appointment.Status = AppointmentStatus.Awaiting;
                 model.Appointment.RegistrationDate = DateTime.Now;
                 // TODO: Current Receptionist Id in the future
-                model.Appointment.ReceptionistId = db.Receptionists.First().UserId;
+                model.Appointment.ReceptionistId = db.Receptionists.First().ReceptionistId;
                 db.Appointments.Add(model.Appointment);
                 db.SaveChanges();
                 return RedirectToAction(nameof(Index));
