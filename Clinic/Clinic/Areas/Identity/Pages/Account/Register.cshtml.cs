@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Clinic.Data;
 
 namespace Clinic.Areas.Identity.Pages.Account
 {
@@ -26,6 +28,7 @@ namespace Clinic.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationDbContext db;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
@@ -38,7 +41,8 @@ namespace Clinic.Areas.Identity.Pages.Account
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            ApplicationDbContext db)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -47,6 +51,7 @@ namespace Clinic.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
+            this.db = db;
         }
 
         /// <summary>
@@ -110,6 +115,9 @@ namespace Clinic.Areas.Identity.Pages.Account
             [Display(Name = "Surname")]
             public string Surname { get; set; }
 
+            public string? Role { get; set; }
+            public IEnumerable<SelectListItem> RoleList { get; set; }
+
         }
 
 
@@ -123,6 +131,15 @@ namespace Clinic.Areas.Identity.Pages.Account
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_LabTechnician)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_HeadLabTechnician)).GetAwaiter().GetResult();
             }
+
+            Input = new()
+            {
+                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+                {
+                    Text = i,
+                    Value = i
+                })
+            };
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -146,6 +163,12 @@ namespace Clinic.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    if (!String.IsNullOrEmpty(Input.Role))
+                    {
+                        await _userManager.AddToRoleAsync(user, Input.Role);
+                        await CreateSpecificEntity(user, Input.Role);
+                    }
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -200,6 +223,47 @@ namespace Clinic.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<ApplicationUser>)_userStore;
+        }
+
+        private async Task CreateSpecificEntity(ApplicationUser user, string role)
+        {
+            switch (role)
+            {
+                case SD.Role_Receptionist:
+                    db.Receptionists.Add(new Receptionist
+                    {
+                        ApplicationUserId = user.Id,
+                    });
+                    break;
+                case SD.Role_Doctor:
+                    db.Doctors.Add(new Doctor
+                    {
+                        ApplicationUserId = user.Id,
+                        NPWZ = "123456"
+                    });
+                    break;
+                case SD.Role_Admin:
+                    db.Admins.Add(new Admin
+                    {
+                        ApplicationUserId = user.Id
+                    });
+                    break;
+                case SD.Role_LabTechnician:
+                    db.LabTechnicians.Add(new LabTechnician
+                    {
+                        ApplicationUserId = user.Id
+                    });
+                    break;
+                case SD.Role_HeadLabTechnician:
+                    db.HeadLabTechnicians.Add(new HeadLabTechnician
+                    {
+                        ApplicationUserId = user.Id
+                    });
+                    break;
+                default:
+                    return;
+            }
+            db.SaveChanges();
         }
     }
 }

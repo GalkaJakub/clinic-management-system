@@ -2,6 +2,7 @@
 using Clinic.Enums;
 using Clinic.Models;
 using Clinic.Models.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,15 +11,17 @@ namespace Clinic.Controllers
     public class AppointmentsController : Controller
     {
         private readonly ApplicationDbContext db;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public AppointmentsController(ApplicationDbContext db)
+        public AppointmentsController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
         {
             this.db = db;
+            this.userManager = userManager;
         }
 
         public IActionResult Index()
         {
-            var appointments = db.Appointments.Include(x => x.Doctor).Include(x => x.Patient).ToList();
+            var appointments = db.Appointments.Include(x => x.Doctor).ThenInclude(x => x.ApplicationUser).Include(x => x.Patient).ToList();
             return View(appointments);
         }
 
@@ -28,7 +31,7 @@ namespace Clinic.Controllers
             {
                 Appointment = new Appointment(),
                 Patients = db.Patients.ToList(),
-                Doctors = db.Doctors.ToList(),
+                Doctors = db.Doctors.Include(x => x.ApplicationUser).ToList(),
             };
             return View(model);
         }
@@ -40,14 +43,21 @@ namespace Clinic.Controllers
             {
                 model.Appointment.Status = AppointmentStatus.Awaiting;
                 model.Appointment.RegistrationDate = DateTime.Now;
+
+                var userId = userManager.GetUserId(User);
+                var recpetionist = db.Receptionists.FirstOrDefault(x=> x.ApplicationUserId == userId);
                 // TODO: Current Receptionist Id in the future
                 model.Appointment.ReceptionistId = db.Receptionists.First().ReceptionistId;
+                /*model.Appointment.ReceptionistId = recpetionist.ReceptionistId;*/
+
+
+
                 db.Appointments.Add(model.Appointment);
                 db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             model.Patients = db.Patients.ToList();
-            model.Doctors = db.Doctors.ToList();
+            model.Doctors = db.Doctors.Include(x => x.ApplicationUser).ToList();
             return View(model);
         }
 
@@ -59,7 +69,7 @@ namespace Clinic.Controllers
             var model = new AppointmentVM
             {
                 Appointment = appointment,
-                Doctors = db.Doctors.ToList(),
+                Doctors = db.Doctors.Include(x => x.ApplicationUser).ToList(),
                 Patients = db.Patients.ToList(),
             };
 
@@ -84,7 +94,7 @@ namespace Clinic.Controllers
                 return RedirectToAction(nameof(Index));
             }
             model.Patients = db.Patients.ToList();
-            model.Doctors = db.Doctors.ToList();
+            model.Doctors = db.Doctors.Include(x => x.ApplicationUser).ToList();
             return View(model);
         }
 
