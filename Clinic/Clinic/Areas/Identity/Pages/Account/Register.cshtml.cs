@@ -230,7 +230,7 @@ namespace Clinic.Areas.Identity.Pages.Account
             switch (role)
             {
                 case SD.Role_Receptionist:
-                    db.Receptionists.Add(new Receptionist
+                    db.Receptionists.Add(new Models.Receptionist
                     {
                         ApplicationUserId = user.Id,
                     });

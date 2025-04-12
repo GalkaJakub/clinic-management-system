@@ -2,12 +2,15 @@
 using Clinic.Enums;
 using Clinic.Models;
 using Clinic.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Clinic.Controllers
+namespace Clinic.Areas.Receptionist.Controllers
 {
+    [Area("Receptionist")]
+    [Authorize(Roles = SD.Role_Receptionist)]
     public class AppointmentsController : Controller
     {
         private readonly ApplicationDbContext db;
@@ -45,11 +48,11 @@ namespace Clinic.Controllers
                 model.Appointment.RegistrationDate = DateTime.Now;
 
                 var userId = userManager.GetUserId(User);
-                var recpetionist = db.Receptionists.FirstOrDefault(x=> x.ApplicationUserId == userId);
-                // TODO: Current Receptionist Id in the future
-                model.Appointment.ReceptionistId = db.Receptionists.First().ReceptionistId;
-                /*model.Appointment.ReceptionistId = recpetionist.ReceptionistId;*/
-
+                var recpetionist = db.Receptionists.FirstOrDefault(x => x.ApplicationUserId == userId);
+                if (recpetionist != null)
+                    model.Appointment.ReceptionistId = recpetionist.ReceptionistId;
+                else
+                    return NotFound();
 
 
                 db.Appointments.Add(model.Appointment);
