@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Clinic.Migrations
 {
     /// <inheritdoc />
-    public partial class AspIdentity : Migration
+    public partial class mig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,7 @@ namespace Clinic.Migrations
                 name: "Addresses",
                 columns: table => new
                 {
-                    AdressId = table.Column<int>(type: "int", nullable: false)
+                    AddressId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -26,7 +26,7 @@ namespace Clinic.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => x.AdressId);
+                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,19 +89,19 @@ namespace Clinic.Migrations
                 {
                     PatientId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PESEL = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PESEL = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AdressId = table.Column<int>(type: "int", nullable: false)
+                    AddressId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Patients", x => x.PatientId);
                     table.ForeignKey(
-                        name: "FK_Patients_Addresses_AdressId",
-                        column: x => x.AdressId,
+                        name: "FK_Patients_Addresses_AddressId",
+                        column: x => x.AddressId,
                         principalTable: "Addresses",
-                        principalColumn: "AdressId",
+                        principalColumn: "AddressId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -170,8 +170,8 @@ namespace Clinic.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -215,8 +215,8 @@ namespace Clinic.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -237,7 +237,7 @@ namespace Clinic.Migrations
                     DoctorId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NPWZ = table.Column<int>(type: "int", nullable: false)
+                    NPWZ = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -421,7 +421,7 @@ namespace Clinic.Migrations
 
             migrationBuilder.InsertData(
                 table: "Addresses",
-                columns: new[] { "AdressId", "ApartNumber", "City", "HomeNumber", "Street" },
+                columns: new[] { "AddressId", "ApartNumber", "City", "HomeNumber", "Street" },
                 values: new object[,]
                 {
                     { 1, null, "Gliwice", "304", "Akademicka" },
@@ -444,7 +444,7 @@ namespace Clinic.Migrations
 
             migrationBuilder.InsertData(
                 table: "Patients",
-                columns: new[] { "PatientId", "AdressId", "Name", "PESEL", "Surname" },
+                columns: new[] { "PatientId", "AddressId", "Name", "PESEL", "Surname" },
                 values: new object[,]
                 {
                     { 1, 1, "Gabriel", "65110414558", "Drabik" },
@@ -554,9 +554,9 @@ namespace Clinic.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Patients_AdressId",
+                name: "IX_Patients_AddressId",
                 table: "Patients",
-                column: "AdressId",
+                column: "AddressId",
                 unique: true);
 
             migrationBuilder.CreateIndex(

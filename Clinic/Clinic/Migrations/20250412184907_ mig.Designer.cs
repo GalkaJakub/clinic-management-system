@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clinic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250412101821_NpwzString")]
-    partial class NpwzString
+    [Migration("20250412184907_ mig")]
+    partial class mig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,11 @@ namespace Clinic.Migrations
 
             modelBuilder.Entity("Clinic.Models.Address", b =>
                 {
-                    b.Property<int>("AdressId")
+                    b.Property<int>("AddressId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdressId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddressId"));
 
                     b.Property<int?>("ApartNumber")
                         .HasColumnType("int");
@@ -48,49 +48,49 @@ namespace Clinic.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AdressId");
+                    b.HasKey("AddressId");
 
                     b.ToTable("Addresses");
 
                     b.HasData(
                         new
                         {
-                            AdressId = 1,
+                            AddressId = 1,
                             City = "Gliwice",
                             HomeNumber = "304",
                             Street = "Akademicka"
                         },
                         new
                         {
-                            AdressId = 2,
+                            AddressId = 2,
                             City = "Warsaw",
                             HomeNumber = "26D",
                             Street = "Pine"
                         },
                         new
                         {
-                            AdressId = 3,
+                            AddressId = 3,
                             City = "Warsaw",
                             HomeNumber = "25C",
                             Street = "Oak"
                         },
                         new
                         {
-                            AdressId = 4,
+                            AddressId = 4,
                             City = "Wroclaw",
                             HomeNumber = "53A",
                             Street = "High"
                         },
                         new
                         {
-                            AdressId = 5,
+                            AddressId = 5,
                             City = "Poznan",
                             HomeNumber = "42D",
                             Street = "Oak"
                         },
                         new
                         {
-                            AdressId = 6,
+                            AddressId = 6,
                             City = "Krakow",
                             HomeNumber = "97B",
                             Street = "Pine"
@@ -401,7 +401,7 @@ namespace Clinic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PatientId"));
 
-                    b.Property<int>("AdressId")
+                    b.Property<int>("AddressId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -410,7 +410,8 @@ namespace Clinic.Migrations
 
                     b.Property<string>("PESEL")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<string>("Surname")
                         .IsRequired()
@@ -418,7 +419,7 @@ namespace Clinic.Migrations
 
                     b.HasKey("PatientId");
 
-                    b.HasIndex("AdressId")
+                    b.HasIndex("AddressId")
                         .IsUnique();
 
                     b.ToTable("Patients");
@@ -427,7 +428,7 @@ namespace Clinic.Migrations
                         new
                         {
                             PatientId = 1,
-                            AdressId = 1,
+                            AddressId = 1,
                             Name = "Gabriel",
                             PESEL = "65110414558",
                             Surname = "Drabik"
@@ -435,7 +436,7 @@ namespace Clinic.Migrations
                         new
                         {
                             PatientId = 2,
-                            AdressId = 2,
+                            AddressId = 2,
                             Name = "Michael",
                             PESEL = "57752850000",
                             Surname = "Brown"
@@ -443,7 +444,7 @@ namespace Clinic.Migrations
                         new
                         {
                             PatientId = 3,
-                            AdressId = 3,
+                            AddressId = 3,
                             Name = "Emma",
                             PESEL = "18204590000",
                             Surname = "Taylor"
@@ -451,7 +452,7 @@ namespace Clinic.Migrations
                         new
                         {
                             PatientId = 4,
-                            AdressId = 4,
+                            AddressId = 4,
                             Name = "John",
                             PESEL = "87673060000",
                             Surname = "Brown"
@@ -459,7 +460,7 @@ namespace Clinic.Migrations
                         new
                         {
                             PatientId = 5,
-                            AdressId = 5,
+                            AddressId = 5,
                             Name = "Emma",
                             PESEL = "99339650000",
                             Surname = "Taylor"
@@ -467,7 +468,7 @@ namespace Clinic.Migrations
                         new
                         {
                             PatientId = 6,
-                            AdressId = 6,
+                            AddressId = 6,
                             Name = "Anna",
                             PESEL = "73435320000",
                             Surname = "Brown"
@@ -763,13 +764,13 @@ namespace Clinic.Migrations
 
             modelBuilder.Entity("Clinic.Models.Patient", b =>
                 {
-                    b.HasOne("Clinic.Models.Address", "Adress")
+                    b.HasOne("Clinic.Models.Address", "Address")
                         .WithOne("Patient")
-                        .HasForeignKey("Clinic.Models.Patient", "AdressId")
+                        .HasForeignKey("Clinic.Models.Patient", "AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Adress");
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("Clinic.Models.PhysicalExam", b =>

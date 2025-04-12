@@ -37,25 +37,33 @@ namespace Clinic.Data
                 .WithMany(x => x.PhysicalExams)
                 .HasForeignKey(x => x.AppointmentId);
 
+            /*
+            modelBuilder.Entity<Patient>()
+                .HasOne(p => p.Address)
+                .WithMany() // Jeśli Address może być przypisany do wielu Patient, użyj WithMany()
+                .HasForeignKey(p => p.AddressId)
+                .IsRequired(); // AddressId jest wymagany, ale sama nawigacja Address nie musi być
+
+            */
             modelBuilder.Entity<ExamSelection>().Property(x => x.Type).HasConversion<string>();
             modelBuilder.Entity<Appointment>().Property(x => x.Status).HasConversion<string>();
             modelBuilder.Entity<LabExam>().Property(x => x.Status).HasConversion<string>();
 
             modelBuilder.Entity<Patient>().HasData(
-                new Patient { PatientId = 1, Name = "Gabriel", Surname = "Drabik", AdressId = 1, PESEL = "65110414558" },
-                new Patient { PatientId = 2, Name = "Michael", Surname = "Brown", AdressId =2, PESEL = "57752850000" },
-                new Patient { PatientId = 3, Name = "Emma", Surname = "Taylor", AdressId = 3, PESEL = "18204590000" },
-                new Patient { PatientId = 4, Name = "John", Surname = "Brown", AdressId = 4, PESEL = "87673060000" },
-                new Patient { PatientId = 5, Name = "Emma", Surname = "Taylor", AdressId = 5, PESEL = "99339650000" },
-                new Patient { PatientId = 6, Name = "Anna", Surname = "Brown", AdressId = 6, PESEL = "73435320000" });
+                new Patient { PatientId = 1, Name = "Gabriel", Surname = "Drabik", AddressId = 1, PESEL = "65110414558" },
+                new Patient { PatientId = 2, Name = "Michael", Surname = "Brown", AddressId =2, PESEL = "57752850000" },
+                new Patient { PatientId = 3, Name = "Emma", Surname = "Taylor", AddressId = 3, PESEL = "18204590000" },
+                new Patient { PatientId = 4, Name = "John", Surname = "Brown", AddressId = 4, PESEL = "87673060000" },
+                new Patient { PatientId = 5, Name = "Emma", Surname = "Taylor", AddressId = 5, PESEL = "99339650000" },
+                new Patient { PatientId = 6, Name = "Anna", Surname = "Brown", AddressId = 6, PESEL = "73435320000" });
 
             modelBuilder.Entity<Address>().HasData(
-                new Address{ AdressId = 1, City = "Gliwice", Street = "Akademicka", HomeNumber = "304" },
-                new Address{ AdressId = 2, City = "Warsaw", Street = "Pine", HomeNumber = "26D" },
-                new Address{ AdressId = 3, City = "Warsaw", Street = "Oak", HomeNumber = "25C" },
-                new Address{ AdressId = 4, City = "Wroclaw", Street = "High", HomeNumber = "53A" },
-                new Address{ AdressId = 5, City = "Poznan", Street = "Oak", HomeNumber = "42D" },
-                new Address{ AdressId = 6, City = "Krakow", Street = "Pine", HomeNumber = "97B" }
+                new Address{ AddressId = 1, City = "Gliwice", Street = "Akademicka", HomeNumber = "304" },
+                new Address{ AddressId = 2, City = "Warsaw", Street = "Pine", HomeNumber = "26D" },
+                new Address{ AddressId = 3, City = "Warsaw", Street = "Oak", HomeNumber = "25C" },
+                new Address{ AddressId = 4, City = "Wroclaw", Street = "High", HomeNumber = "53A" },
+                new Address{ AddressId = 5, City = "Poznan", Street = "Oak", HomeNumber = "42D" },
+                new Address{ AddressId = 6, City = "Krakow", Street = "Pine", HomeNumber = "97B" }
                 );
             modelBuilder.Entity<ExamSelection>().HasData(
                 new ExamSelection { Shortcut = "Gen", Name = "General Checkup", Type = ExamType.Physical},
