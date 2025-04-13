@@ -47,7 +47,7 @@ namespace Clinic.Migrations
 
                     b.HasKey("AddressId");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Addresses", (string)null);
 
                     b.HasData(
                         new
@@ -111,7 +111,7 @@ namespace Clinic.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("Admins");
+                    b.ToTable("Admins", (string)null);
                 });
 
             modelBuilder.Entity("Clinic.Models.ApplicationUser", b =>
@@ -229,7 +229,7 @@ namespace Clinic.Migrations
 
                     b.HasIndex("ReceptionistId");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("Clinic.Models.Doctor", b =>
@@ -253,7 +253,7 @@ namespace Clinic.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctors", (string)null);
                 });
 
             modelBuilder.Entity("Clinic.Models.ExamSelection", b =>
@@ -271,7 +271,7 @@ namespace Clinic.Migrations
 
                     b.HasKey("Shortcut");
 
-                    b.ToTable("ExamSelections");
+                    b.ToTable("ExamSelections", (string)null);
 
                     b.HasData(
                         new
@@ -311,7 +311,7 @@ namespace Clinic.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("HeadLabTechnicians");
+                    b.ToTable("HeadLabTechnicians", (string)null);
                 });
 
             modelBuilder.Entity("Clinic.Models.LabExam", b =>
@@ -367,7 +367,7 @@ namespace Clinic.Migrations
 
                     b.HasIndex("LabTechnicianId");
 
-                    b.ToTable("LabExams");
+                    b.ToTable("LabExams", (string)null);
                 });
 
             modelBuilder.Entity("Clinic.Models.LabTechnician", b =>
@@ -387,7 +387,7 @@ namespace Clinic.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("LabTechnicians");
+                    b.ToTable("LabTechnicians", (string)null);
                 });
 
             modelBuilder.Entity("Clinic.Models.Patient", b =>
@@ -419,7 +419,7 @@ namespace Clinic.Migrations
                     b.HasIndex("AddressId")
                         .IsUnique();
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patients", (string)null);
 
                     b.HasData(
                         new
@@ -497,7 +497,7 @@ namespace Clinic.Migrations
 
                     b.HasIndex("ExamSelectionId");
 
-                    b.ToTable("PhysicalExams");
+                    b.ToTable("PhysicalExams", (string)null);
                 });
 
             modelBuilder.Entity("Clinic.Models.Receptionist", b =>
@@ -517,7 +517,7 @@ namespace Clinic.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("Receptionists");
+                    b.ToTable("Receptionists", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

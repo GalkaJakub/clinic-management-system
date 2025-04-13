@@ -22,9 +22,20 @@ namespace Clinic.Areas.Receptionist.Controllers
             this.userManager = userManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string patientName, string doctorName)
         {
             var appointments = db.Appointments.Include(x => x.Doctor).ThenInclude(x => x.ApplicationUser).Include(x => x.Patient).ToList();
+
+            if (!String.IsNullOrEmpty(patientName))
+            {
+                appointments = appointments.Where(x => (x.Patient.Name + " " + x.Patient.Surname).ToLower().Contains(patientName.ToLower())).ToList();
+            }
+
+            if (!String.IsNullOrEmpty(doctorName))
+            {
+                appointments = appointments.Where(x => (x.Doctor.ApplicationUser.Name + " " + x.Doctor.ApplicationUser.Surname).ToLower().Contains(doctorName.ToLower())).ToList();
+            }
+
             return View(appointments);
         }
 
