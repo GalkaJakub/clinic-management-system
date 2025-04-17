@@ -45,6 +45,38 @@ namespace Clinic.Areas.Receptionist.Controllers
             return View(model);
         }
 
+        public IActionResult CreateAddress()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult CreateAddress(Address model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState
+                    .Where(x => x.Value.Errors.Count > 0)
+                    .Select(x => new { x.Key, x.Value.Errors });
+                foreach (var error in errors)
+                {
+                    Console.WriteLine($"Key: {error.Key}, Errors: {string.Join(", ", error.Errors)}");
+                }
+            }
+
+            if (ModelState.IsValid)
+            {
+                db.Addresses.Add(model);
+                db.SaveChanges();
+                TempData["Success"] = "Address added successfully!";
+                return RedirectToAction("Create");
+            }
+
+            return View(model);
+            
+        }
+
         [HttpPost]
         public IActionResult Create(PatientVM model)
         {
