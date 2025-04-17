@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clinic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250412184907_ mig")]
-    partial class mig
+    [Migration("20250417140811_patient_address_relation")]
+    partial class patient_address_relation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -419,8 +419,7 @@ namespace Clinic.Migrations
 
                     b.HasKey("PatientId");
 
-                    b.HasIndex("AddressId")
-                        .IsUnique();
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Patients");
 
@@ -765,8 +764,8 @@ namespace Clinic.Migrations
             modelBuilder.Entity("Clinic.Models.Patient", b =>
                 {
                     b.HasOne("Clinic.Models.Address", "Address")
-                        .WithOne("Patient")
-                        .HasForeignKey("Clinic.Models.Patient", "AddressId")
+                        .WithMany("Patients")
+                        .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -856,8 +855,7 @@ namespace Clinic.Migrations
 
             modelBuilder.Entity("Clinic.Models.Address", b =>
                 {
-                    b.Navigation("Patient")
-                        .IsRequired();
+                    b.Navigation("Patients");
                 });
 
             modelBuilder.Entity("Clinic.Models.ApplicationUser", b =>

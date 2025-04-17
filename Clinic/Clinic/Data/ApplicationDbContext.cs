@@ -37,14 +37,14 @@ namespace Clinic.Data
                 .WithMany(x => x.PhysicalExams)
                 .HasForeignKey(x => x.AppointmentId);
 
-            /*
-            modelBuilder.Entity<Patient>()
-                .HasOne(p => p.Address)
-                .WithMany() // Jeśli Address może być przypisany do wielu Patient, użyj WithMany()
-                .HasForeignKey(p => p.AddressId)
-                .IsRequired(); // AddressId jest wymagany, ale sama nawigacja Address nie musi być
 
-            */
+            modelBuilder.Entity<Patient>()
+                .HasOne(x => x.Address)
+                .WithMany(x => x.Patients) 
+                .HasForeignKey(x => x.AddressId);
+                
+            
+            
             modelBuilder.Entity<ExamSelection>().Property(x => x.Type).HasConversion<string>();
             modelBuilder.Entity<Appointment>().Property(x => x.Status).HasConversion<string>();
             modelBuilder.Entity<LabExam>().Property(x => x.Status).HasConversion<string>();

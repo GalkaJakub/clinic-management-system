@@ -10,7 +10,7 @@ namespace Clinic.Models
         public string Street { get; set; }
         public string HomeNumber { get; set; }
         public int? ApartNumber { get; set; }
-        public Patient Patient { get; set; }
+        public ICollection<Patient> Patients { get; set; }
 
     }
 }

@@ -47,7 +47,7 @@ namespace Clinic.Migrations
 
                     b.HasKey("AddressId");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
 
                     b.HasData(
                         new
@@ -111,7 +111,7 @@ namespace Clinic.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("Admins", (string)null);
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("Clinic.Models.ApplicationUser", b =>
@@ -229,7 +229,7 @@ namespace Clinic.Migrations
 
                     b.HasIndex("ReceptionistId");
 
-                    b.ToTable("Appointments", (string)null);
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("Clinic.Models.Doctor", b =>
@@ -253,7 +253,7 @@ namespace Clinic.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("Doctors", (string)null);
+                    b.ToTable("Doctors");
                 });
 
             modelBuilder.Entity("Clinic.Models.ExamSelection", b =>
@@ -271,7 +271,7 @@ namespace Clinic.Migrations
 
                     b.HasKey("Shortcut");
 
-                    b.ToTable("ExamSelections", (string)null);
+                    b.ToTable("ExamSelections");
 
                     b.HasData(
                         new
@@ -311,7 +311,7 @@ namespace Clinic.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("HeadLabTechnicians", (string)null);
+                    b.ToTable("HeadLabTechnicians");
                 });
 
             modelBuilder.Entity("Clinic.Models.LabExam", b =>
@@ -367,7 +367,7 @@ namespace Clinic.Migrations
 
                     b.HasIndex("LabTechnicianId");
 
-                    b.ToTable("LabExams", (string)null);
+                    b.ToTable("LabExams");
                 });
 
             modelBuilder.Entity("Clinic.Models.LabTechnician", b =>
@@ -387,7 +387,7 @@ namespace Clinic.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("LabTechnicians", (string)null);
+                    b.ToTable("LabTechnicians");
                 });
 
             modelBuilder.Entity("Clinic.Models.Patient", b =>
@@ -416,10 +416,9 @@ namespace Clinic.Migrations
 
                     b.HasKey("PatientId");
 
-                    b.HasIndex("AddressId")
-                        .IsUnique();
+                    b.HasIndex("AddressId");
 
-                    b.ToTable("Patients", (string)null);
+                    b.ToTable("Patients");
 
                     b.HasData(
                         new
@@ -497,7 +496,7 @@ namespace Clinic.Migrations
 
                     b.HasIndex("ExamSelectionId");
 
-                    b.ToTable("PhysicalExams", (string)null);
+                    b.ToTable("PhysicalExams");
                 });
 
             modelBuilder.Entity("Clinic.Models.Receptionist", b =>
@@ -517,7 +516,7 @@ namespace Clinic.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("Receptionists", (string)null);
+                    b.ToTable("Receptionists");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -762,8 +761,8 @@ namespace Clinic.Migrations
             modelBuilder.Entity("Clinic.Models.Patient", b =>
                 {
                     b.HasOne("Clinic.Models.Address", "Address")
-                        .WithOne("Patient")
-                        .HasForeignKey("Clinic.Models.Patient", "AddressId")
+                        .WithMany("Patients")
+                        .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -853,8 +852,7 @@ namespace Clinic.Migrations
 
             modelBuilder.Entity("Clinic.Models.Address", b =>
                 {
-                    b.Navigation("Patient")
-                        .IsRequired();
+                    b.Navigation("Patients");
                 });
 
             modelBuilder.Entity("Clinic.Models.ApplicationUser", b =>

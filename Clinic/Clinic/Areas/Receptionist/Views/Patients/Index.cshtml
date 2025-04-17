@@ -5,20 +5,19 @@
         <div class="col-md-6">
             <h3 class="mb-4">Patients</h3>
         </div>
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <form class="d-flex" asp-action="Index" asp-controller="Patients">
-                    <input name="searchString" class="form-control me-1" type="search" placeholder="Search for a Patient"></input>
-                    <button class="btn btn-primary" type="submit">Search by name</button>
-                </form>
-            </div>
-            <div class="col-md-6">
-                <a asp-controller="Patients" asp-action="Index" class="btn btn-secondary">Back to full list</a>
-            </div>
-        </div>
         <div class="col-md-6 text-md-end">
             <a asp-controller="Patients" asp-action="Create" class="btn btn-primary">Add a Patient</a>
         </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <form class="d-flex align-items-stretch" asp-action="Index" asp-controller="Patients">
+                    <input name="searchString" class="form-control me-2" type="search" placeholder="Search for a Patient" />
+                    <button class="btn btn-primary me-2" type="submit">Search</button>
+                    <a asp-controller="Patients" asp-action="Index" class="btn btn-secondary">Clear</a>
+                </form>
+            </div>
+        </div>
+        
 
         <div class="table-responsive shadow-sm rounded">
             <table class="table table-hover table-striped align-middle border rounded">
@@ -29,7 +28,8 @@
                         <th scope="col">PESEL</th>
                         <th scope="col">City</th>
                         <th scope="col">Street</th>
-                        <th scope="col">Home Number</th>
+                        <th scope="col">Home Num.</th>
+                        <th scope="col">Apartment Num.</th>
 
                     </tr>
                 </thead>
@@ -43,7 +43,7 @@
                             <td>@(patient.Address.City)</td>
                             <td>@(patient.Address.Street)</td>
                             <td>@(patient.Address.HomeNumber)</td>
-                            <td>@(patient.Address.ApartNumber)</td>
+                            <td>@(patient.Address.ApartNumber != null ? patient.Address.ApartNumber.ToString() : "-")</td>
                         </tr>
                     }
                 </tbody>
