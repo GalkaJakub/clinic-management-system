@@ -249,7 +249,7 @@ namespace Clinic.Areas.Identity.Pages.Account
                     });
                     break;
                 case SD.Role_LabTechnician:
-                    db.LabTechnicians.Add(new LabTechnician
+                    db.LabTechnicians.Add(new Clinic.Models.LabTechnician
                     {
                         ApplicationUserId = user.Id
                     });

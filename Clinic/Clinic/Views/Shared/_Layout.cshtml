@@ -42,6 +42,13 @@
                         </li>
                         }
 
+                        @if (User.IsInRole(SD.Role_LabTechnician))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="LabTechnician" asp-controller="LabExams" asp-action="Index">Exams</a>
+                            </li>
+                        }
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
