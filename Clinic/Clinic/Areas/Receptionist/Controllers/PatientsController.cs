@@ -105,5 +105,50 @@ namespace Clinic.Areas.Receptionist.Controllers
             model.Addresses = db.Addresses.ToList();
             return View(model);
         }
+
+
+        public IActionResult UpdatePatient(int patientId)
+        {
+            var patient = db.Patients.Find(patientId);
+            if (patient == null)
+                return NotFound();
+            var model = new PatientVM
+            {
+                Patient = patient,
+                Addresses = db.Addresses.ToList()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult UpdatePatient(PatientVM model)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("Error");
+            }
+            if (ModelState.IsValid)
+            {
+                var newPatient = model.Patient;
+                var patient = db.Patients.Find(newPatient.PatientId);
+                if (patient != null)
+                {
+                    patient.Surname = newPatient.Surname;
+                    patient.PESEL = newPatient.PESEL;
+                    patient.Name = newPatient.Name;
+                    patient.AddressId = newPatient.AddressId;
+                    db.SaveChanges();
+                }
+                else 
+                {
+                    Console.WriteLine("Patient is null");
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            model.Addresses = db.Addresses.ToList();
+            return View(model);
+        }
     }
 }

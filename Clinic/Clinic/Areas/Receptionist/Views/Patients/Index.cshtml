@@ -30,6 +30,7 @@
                         <th scope="col">Street</th>
                         <th scope="col">Home Num.</th>
                         <th scope="col">Apartment Num.</th>
+                        <th scope="col"></th>
 
                     </tr>
                 </thead>
@@ -44,6 +45,16 @@
                             <td>@(patient.Address.Street)</td>
                             <td>@(patient.Address.HomeNumber)</td>
                             <td>@(patient.Address.ApartNumber != null ? patient.Address.ApartNumber.ToString() : "-")</td>
+                            <td>
+                                <a asp-action="UpdatePatient" asp-route-patientid="@patient.PatientId"
+                                   class="btn btn-info">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a asp-action="DeleteAppointment" asp-route-patientid="@patient.PatientId"
+                                   class="btn btn-danger">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>
