@@ -29,7 +29,7 @@ namespace Clinic.Areas.Receptionist.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 patients = patients.Where(x => x.Name.Contains(searchString)
-                || x.Surname.Contains(searchString)).ToList();
+                || x.Surname.Contains(searchString) || x.PESEL.Contains(searchString)).ToList();
             }
 
             return View(patients);
