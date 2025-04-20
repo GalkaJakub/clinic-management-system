@@ -32,10 +32,15 @@ namespace Clinic.Areas.LabTechnician.Controllers
         public IActionResult LabExam(int labExamId)
         {
 
-            var labExam = db.LabExams.Find(labExamId);
+            var labExam = db.LabExams
+                .Include(x => x.ExamSelection)
+                .FirstOrDefault(x => x.LabExamId == labExamId);
 
-
-            var model = labExam;
+            var model = new LabExamVM
+            {
+                LabExam = labExam,
+                ExamSelection = labExam?.ExamSelection
+            };
             return View(model);
         }
 

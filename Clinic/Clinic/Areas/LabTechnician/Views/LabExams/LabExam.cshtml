@@ -1,10 +1,11 @@
 ﻿
-@model LabExam
+@model LabExamVM
 
 
-<p>@Model.LabExamId</p>
-<p>@Model.RequestDate</p>
-<p>@Model.Status.ToString()</p>
+<p>@Model.LabExam.DoctorsNotes</p>
+<p>@Model.LabExam.HeadLabNotes</p>
+<p>@Model.ExamSelection.Name</p>
+<p>@Model.LabExam.Status.ToString()</p>
 
 
 TODO: add doctor notes
