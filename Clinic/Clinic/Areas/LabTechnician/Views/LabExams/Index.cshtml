@@ -26,6 +26,7 @@
                         <th scope="col">Exam Date</th>
                         <th scope="col">Status</th>
                         <th scope="col">Lab technician name</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,6 +37,12 @@
                             <td>@(labExam.ExamDate)</td>
                             <td>@(labExam.Status)</td>
                             <td>@(labExam.LabTechnician.ApplicationUser.Name != null ? labExam.LabTechnician.ApplicationUser.Name : "-")</td>
+                            <td>
+                                <a asp-action="LabExam" asp-route-labExamId="@labExam.LabExamId"
+                                   class="btn btn-info">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>

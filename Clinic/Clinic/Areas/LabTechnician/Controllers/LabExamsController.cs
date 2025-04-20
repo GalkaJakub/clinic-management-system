@@ -28,5 +28,16 @@ namespace Clinic.Areas.LabTechnician.Controllers
             return View(labExams);
         }
 
+
+        public IActionResult LabExam(int labExamId)
+        {
+
+            var labExam = db.LabExams.Find(labExamId);
+
+
+            var model = labExam;
+            return View(model);
+        }
+
     }
 }
