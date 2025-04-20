@@ -1,16 +1,36 @@
-﻿
-@model LabExamVM
+﻿@model LabExamVM
 
 
-<p>@Model.LabExam.DoctorsNotes</p>
-<p>@Model.LabExam.HeadLabNotes</p>
-<p>@Model.ExamSelection.Name</p>
-<p>@Model.LabExam.Status.ToString()</p>
+<h2>Lab Exam Details</h2>
 
+<form asp-action="UpdateLabExam" method="post">
+    <input type="hidden" asp-for="LabExam.LabExamId" />
 
-TODO: add doctor notes
-TODO: add HeadLabNotes
-TODO: add a text field for result input
-TODO: add field to change status
-TODO: add exam selection 
-TODO: add delete exam field
+    <div class="mb-3">
+        <label asp-for="LabExam.DoctorsNotes" class="form-label">Doctor Notes</label>
+        <textarea asp-for="LabExam.DoctorsNotes" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="LabExam.HeadLabNotes" class="form-label">Head Lab Notes</label>
+        <textarea asp-for="LabExam.HeadLabNotes" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="LabExam.Result" class="form-label">Result</label>
+        <textarea asp-for="LabExam.Result" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Exam Selection</label>
+        <input class="form-control" value="@Model.ExamSelection?.Name" disabled />
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <a asp-action="DeleteLabExam" asp-route-labExamId="@Model.LabExam.LabExamId" class="btn btn-danger">
+            Delete Exam
+        </a>
+
+        <input type="submit" value="Save Changes" class="btn btn-primary" />
+    </div>
+</form>
