@@ -109,10 +109,10 @@ namespace Clinic.Areas.Receptionist.Controllers
 
         public IActionResult DeletePatient(int patientId)
         {
-            var patient = db.Appointments.Find(patientId);
+            var patient = db.Patients.Find(patientId);
             if (patient != null)
             {
-                db.Appointments.Remove(patient);
+                db.Patients.Remove(patient);
                 db.SaveChanges();
             }
             return RedirectToAction(nameof(Index));
