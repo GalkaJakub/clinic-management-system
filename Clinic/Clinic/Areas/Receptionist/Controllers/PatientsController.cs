@@ -107,6 +107,18 @@ namespace Clinic.Areas.Receptionist.Controllers
         }
 
 
+        public IActionResult DeletePatient(int patientId)
+        {
+            var patient = db.Appointments.Find(patientId);
+            if (patient != null)
+            {
+                db.Appointments.Remove(patient);
+                db.SaveChanges();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+
         public IActionResult UpdatePatient(int patientId)
         {
             var patient = db.Patients.Find(patientId);
