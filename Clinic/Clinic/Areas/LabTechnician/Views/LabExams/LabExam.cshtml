@@ -3,9 +3,14 @@
 
 <h2>Lab Exam Details</h2>
 
-<form asp-action="UpdateLabExam" method="post">
+<form asp-action="LabExam" method="post">
     <input type="hidden" asp-for="LabExam.LabExamId" />
-
+    <input type="hidden" asp-for="LabExam.ExamSelectionId" />
+    <input type="hidden" asp-for="LabExam.AppointmentId" />
+    <input type="hidden" asp-for="LabExam.LabTechnicianId" />
+    <input type="hidden" asp-for="LabExam.HeadLabTechnicianId" />
+    <input type="hidden" asp-for="LabExam.ExamDate" />
+    <input type="hidden" asp-for="LabExam.RequestDate" />
     <div class="mb-3">
         <label asp-for="LabExam.DoctorsNotes" class="form-label">Doctor Notes</label>
         <textarea asp-for="LabExam.DoctorsNotes" class="form-control"></textarea>
