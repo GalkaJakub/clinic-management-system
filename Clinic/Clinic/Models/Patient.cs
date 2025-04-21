@@ -21,5 +21,6 @@ namespace Clinic.Models
         public string Surname { get; set; }
         public int AddressId { get; set; }
         public Address? Address { get; set; }
+        public ICollection<Appointment>? Appointments { get; set; } = new List<Appointment>();
     }
 }
