@@ -1,0 +1,52 @@
+﻿@model ApplicationUser
+
+@{
+    ViewData["Title"] = "Update Account";
+}
+
+<h1>Update User</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+        <form asp-action="UpdateUser" method="post">
+            <hr />
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-floating mb-3">
+                <input asp-for="Name" class="form-control" aria-required="true" placeholder="Name" />
+                <label asp-for="Name">Name</label>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Surname" class="form-control" aria-required="true" placeholder="Surname" />
+                <label asp-for="Surname">Surname</label>
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Email" class="form-control" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Email">Email</label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="UserName" class="form-control" aria-required="true" placeholder="UserName" />
+                <label asp-for="UserName">Login</label>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            @if (Model.Doctor != null)
+            {
+                <div class="form-floating mb-3">
+                    <input asp-for="Doctor.NPWZ" class="form-control" aria-required="true" placeholder="NPWZ" />
+                    <label asp-for="Doctor.NPWZ">NPWZ</label>
+                    <input type="hidden" asp-for="Doctor.ApplicationUserId" />
+                    <input type="hidden" asp-for="Doctor.DoctorId" />
+                </div>
+            }
+
+            <button id="updateSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Update Account</button>
+        </form>
+    </div>
+</div>

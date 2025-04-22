@@ -14,10 +14,12 @@ namespace Clinic.Areas.Admin.Controllers
     public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ApplicationDbContext db;
 
-        public UsersController(UserManager<ApplicationUser> userManager)
+        public UsersController(UserManager<ApplicationUser> userManager, ApplicationDbContext db)
         {
             this.userManager = userManager;
+            this.db = db;
         }
 
         public async Task<IActionResult> Index()
@@ -61,6 +63,39 @@ namespace Clinic.Areas.Admin.Controllers
             }
             return View();
             
+        }
+
+        public IActionResult UpdateUser(string userId)
+        {
+            var user = db.Users.Include(x => x.Doctor).FirstOrDefault(x => x.Id == userId);
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateUser(ApplicationUser user)
+        {
+            if (ModelState.IsValid)
+            {
+                var updatedUser = db.Users.Include(x => x.Doctor).FirstOrDefault(x => x.Id == user.Id);
+                if (updatedUser != null)
+                {
+                    updatedUser.Name = user.Name;
+                    updatedUser.Surname = user.Surname;
+                    updatedUser.Email = user.Email;
+                    updatedUser.UserName = user.UserName;
+                    
+                    if(user.Doctor != null)
+                    {
+                        updatedUser.Doctor.NPWZ = user.Doctor.NPWZ;
+                    }
+
+                    await userManager.UpdateAsync(updatedUser);
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            return View(user);
+
         }
 
     }

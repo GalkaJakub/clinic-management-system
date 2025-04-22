@@ -37,7 +37,8 @@
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Surname</th>
-                        <th scope="col">UserName</th>
+                        <th scope="col">Login</th>
+                        <th scope="col">Email</th>
                         <th scope="col">Role</th>
                         <th scope="col">NPWZ</th>
                         <th scope="col"></th>
@@ -50,6 +51,7 @@
                             <td>@m.User.Name</td>
                             <td>@m.User.Surname</td>
                             <td>@m.User.UserName</td>
+                            <td>@m.User.Email</td>
                             <td>@m.Role</td>
                             @if (m.User.Doctor != null)
                             {
@@ -61,7 +63,7 @@
                             }
 
                             <td>
-                                <a asp-action="UpdateAppointment" asp-route-UserId="@m.User.Id"
+                                <a asp-action="UpdateUser" asp-route-UserId="@m.User.Id"
                                    class="btn btn-info">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
