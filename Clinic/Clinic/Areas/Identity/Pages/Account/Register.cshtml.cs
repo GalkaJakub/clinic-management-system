@@ -236,26 +236,26 @@ namespace Clinic.Areas.Identity.Pages.Account
                     });
                     break;
                 case SD.Role_Doctor:
-                    db.Doctors.Add(new Doctor
+                    db.Doctors.Add(new Models.Doctor
                     {
                         ApplicationUserId = user.Id,
                         NPWZ = "123456"
                     });
                     break;
                 case SD.Role_Admin:
-                    db.Admins.Add(new Admin
+                    db.Admins.Add(new Models.Admin
                     {
                         ApplicationUserId = user.Id
                     });
                     break;
                 case SD.Role_LabTechnician:
-                    db.LabTechnicians.Add(new Clinic.Models.LabTechnician
+                    db.LabTechnicians.Add(new Models.LabTechnician
                     {
                         ApplicationUserId = user.Id
                     });
                     break;
                 case SD.Role_HeadLabTechnician:
-                    db.HeadLabTechnicians.Add(new HeadLabTechnician
+                    db.HeadLabTechnicians.Add(new Models.HeadLabTechnician
                     {
                         ApplicationUserId = user.Id
                     });
