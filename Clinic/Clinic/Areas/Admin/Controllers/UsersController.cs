@@ -1,6 +1,7 @@
 ﻿using Clinic.Data;
 using Clinic.Models;
 using Clinic.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,15 +10,14 @@ using Microsoft.IdentityModel.Tokens;
 namespace Clinic.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class UsersController : Controller
     {
-        private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public UsersController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> _userManager)
+        public UsersController(UserManager<ApplicationUser> userManager)
         {
-            this.roleManager = roleManager;
-            userManager = _userManager;
+            this.userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -46,5 +46,22 @@ namespace Clinic.Areas.Admin.Controllers
             }
             return View(model);
         }
+        public IActionResult CreateUser()
+        {
+            return RedirectToPage("/Account/Register", new { area = "Identity" });
+        }
+
+        public async Task<ActionResult> DeleteUser(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                await userManager.DeleteAsync(user);
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
+            
+        }
+
     }
 }
