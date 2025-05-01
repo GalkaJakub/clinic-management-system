@@ -11,15 +11,28 @@
     <input type="hidden" asp-for="LabExam.HeadLabTechnicianId" />
     <input type="hidden" asp-for="LabExam.ExamDate" />
     <input type="hidden" asp-for="LabExam.RequestDate" />
-    <div class="mb-3">
-        <label asp-for="LabExam.DoctorsNotes" class="form-label">Doctor Notes</label>
-        <textarea asp-for="LabExam.DoctorsNotes" class="form-control"></textarea>
+    <input type="hidden" asp-for="LabExam.DoctorsNotes" />
+    <input type="hidden" asp-for="LabExam.HeadLabNotes" />
+    
+    <div class="card mb-3">
+        <div class="card-header">
+            Doctor Notes
+        </div>
+        <div class="card-body">
+            <p class="card-text">@Model.LabExam.DoctorsNotes</p>
+        </div>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="LabExam.HeadLabNotes" class="form-label">Head Lab Notes</label>
-        <textarea asp-for="LabExam.HeadLabNotes" class="form-control"></textarea>
-    </div>
+    @if(Model.LabExam.HeadLabNotes != null)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                Head Lab Notes
+            </div>
+            <div class="card-body">
+                <p class="card-text">@Model.LabExam.HeadLabNotes</p>
+            </div>
+        </div>
+    }
 
     <div class="mb-3">
         <label asp-for="LabExam.Result" class="form-label">Result</label>
