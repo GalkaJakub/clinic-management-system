@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
+using System.Drawing.Printing;
 
 
 namespace Clinic.Areas.LabTechnician.Controllers
@@ -22,11 +23,27 @@ namespace Clinic.Areas.LabTechnician.Controllers
             this.db = db;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string searchString, int? pageIndex, int pageSize = 10)
         {
-            var labExams = db.LabExams.Include(x => x.LabTechnician).ThenInclude(x => x.ApplicationUser).ToList();
+            ViewData["CurrentFilter"] = searchString;
 
-            return View(labExams);
+            IQueryable<LabExam> labExamsQuery = db.LabExams
+                .Include(x => x.LabTechnician)
+                .ThenInclude(x => x.ApplicationUser);
+
+            // Jeśli istnieje funkcjonalność wyszukiwania
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                labExamsQuery = labExamsQuery.Where(x =>
+                    x.LabTechnician.ApplicationUser.Name.Contains(searchString) ||
+                    x.LabTechnician.ApplicationUser.Surname.Contains(searchString));
+            }
+
+
+            int pageNumber = pageIndex ?? 1;
+            var paginatedExams = await PaginatedList<LabExam>.CreateAsync(labExamsQuery, pageNumber, pageSize);
+
+            return View(paginatedExams);
         }
 
 
@@ -97,6 +114,17 @@ namespace Clinic.Areas.LabTechnician.Controllers
 
 
                 return View(model);
+        }
+
+        public IActionResult DeleteLabExam(int labExamId)
+        {
+            var labExam = db.LabExams.Find(labExamId);
+            if (labExam != null)
+            {
+                db.LabExams.Remove(labExam);
+                db.SaveChanges();
+            }
+            return RedirectToAction(nameof(Index));
         }
 
     }

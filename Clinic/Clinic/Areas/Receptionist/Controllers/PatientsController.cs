@@ -22,7 +22,7 @@ namespace Clinic.Areas.Receptionist.Controllers
             this.db = db;
         }
 
-        public async Task<IActionResult> Index(string searchString, int? pageIndex, int pageSize = 1)
+        public async Task<IActionResult> Index(string searchString, int? pageIndex, int pageSize = 10)
         {
             ViewData["CurrentFilter"] = searchString;
 

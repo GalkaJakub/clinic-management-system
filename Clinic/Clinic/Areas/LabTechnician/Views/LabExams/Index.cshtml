@@ -1,5 +1,4 @@
-﻿
-@model List<LabExam>
+﻿@model PaginatedList<LabExam>
 
 
 <div class="container mt-4">
@@ -30,7 +29,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var labExam in Model)
+                    @foreach (var labExam in Model.Items)
                     {
                         <tr>
                             <td>@(labExam.RequestDate)</td>
@@ -47,5 +46,95 @@
                     }
                 </tbody>
             </table>
+        </div>
+        @* Paging *@
+        <div class="row mt-4">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-6">
+                <nav>
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                            <a class="page-link text-black" asp-route-pageIndex="1"
+                               asp-route-sortOrder="@ViewData["CurrentSort"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                <span>First</span>
+                            </a>
+                        </li>
+
+                        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                            <a class="page-link text-black" asp-route-pageIndex="@(Model.PageIndex - 1)"
+                               asp-route-sortOrder="@ViewData["CurrentSort"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                <span>Previous</span>
+                            </a>
+                        </li>
+
+                        @{
+                            int currentPage = Model.PageIndex;
+                            int totalPages = Model.TotalPages;
+                            var pagesToShow = new List<object>();
+
+                            // Zawsze pokazuj bieżącą stronę
+                            pagesToShow.Add(currentPage);
+
+                            // Dodaj następną stronę jeśli istnieje
+                            if (currentPage + 1 <= totalPages)
+                            {
+                                pagesToShow.Add(currentPage + 1);
+
+                                // Dodaj kropki jeśli jest przerwa między następną stroną a ostatnią
+                                if (currentPage + 2 < totalPages)
+                                {
+                                    pagesToShow.Add("...");
+                                }
+                            }
+
+                            // Dodaj ostatnią stronę jeśli nie została jeszcze dodana
+                            if (!pagesToShow.Contains(totalPages))
+                            {
+                                pagesToShow.Add(totalPages);
+                            }
+                        }
+
+                        @foreach (var item in pagesToShow)
+                        {
+                            if (item is string dots)
+                            {
+                                <li class="page-item disabled">
+                                    <span class="page-link">@dots</span>
+                                </li>
+                            }
+                            else
+                            {
+                                int pageNumber = (int)item;
+                                <li class="page-item @(Model.PageIndex == pageNumber ? "active" : "")">
+                                    <a class="page-link text-black"
+                                       asp-route-pageIndex="@pageNumber"
+                                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                                       asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                        @pageNumber
+                                    </a>
+                                </li>
+                            }
+                        }
+
+                        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                            <a class="page-link text-black" asp-route-pageIndex="@(Model.PageIndex + 1)"
+                               asp-route-sortOrder="@ViewData["CurrentSort"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                <span>Next</span>
+                            </a>
+                        </li>
+                        <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                            <a class="page-link text-black" asp-route-pageIndex="@Model.TotalPages"
+                               asp-route-sortOrder="@ViewData["CurrentSort"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                <span>Last</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
