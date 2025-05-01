@@ -96,7 +96,7 @@ namespace Clinic.Areas.Receptionist.Controllers
             if (ModelState.IsValid)
             {
                 var newAppointment = model.Appointment;
-                var appointment = db.Appointments.Find(newAppointment.AppointemntId);
+                var appointment = db.Appointments.Find(newAppointment.AppointmentId);
                 if (appointment != null)
                 {
                     appointment.AppointmentDate = newAppointment.AppointmentDate;

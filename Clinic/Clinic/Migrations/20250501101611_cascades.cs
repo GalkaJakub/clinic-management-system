@@ -5,14 +5,27 @@
 namespace Clinic.Migrations
 {
     /// <inheritdoc />
-    public partial class ondeletecascades : Migration
+    public partial class cascades : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-        name: "FK_LabExams_Appointments_AppointmentId",
-        table: "LabExams");
+                name: "FK_Appointments_Patients_PatientId",
+                table: "Appointments");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Appointments_Patients_PatientId",
+                table: "Appointments",
+                column: "PatientId",
+                principalTable: "Patients",
+                principalColumn: "PatientId",
+                onDelete: ReferentialAction.Cascade);
+
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_LabExams_Appointments_AppointmentId",
+                table: "LabExams");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_PhysicalExams_Appointments_AppointmentId",

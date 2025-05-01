@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Clinic.Migrations
 {
     /// <inheritdoc />
-    public partial class patient_address_relation : Migration
+    public partial class init3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -311,7 +311,7 @@ namespace Clinic.Migrations
                 name: "Appointments",
                 columns: table => new
                 {
-                    AppointemntId = table.Column<int>(type: "int", nullable: false)
+                    AppointmentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Diagnosis = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -324,7 +324,7 @@ namespace Clinic.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Appointments", x => x.AppointemntId);
+                    table.PrimaryKey("PK_Appointments", x => x.AppointmentId);
                     table.ForeignKey(
                         name: "FK_Appointments_Doctors_DoctorId",
                         column: x => x.DoctorId,
@@ -370,7 +370,7 @@ namespace Clinic.Migrations
                         name: "FK_LabExams_Appointments_AppointmentId",
                         column: x => x.AppointmentId,
                         principalTable: "Appointments",
-                        principalColumn: "AppointemntId",
+                        principalColumn: "AppointmentId",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_LabExams_ExamSelections_ExamSelectionId",
@@ -409,7 +409,7 @@ namespace Clinic.Migrations
                         name: "FK_PhysicalExams_Appointments_AppointmentId",
                         column: x => x.AppointmentId,
                         principalTable: "Appointments",
-                        principalColumn: "AppointemntId",
+                        principalColumn: "AppointmentId",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_PhysicalExams_ExamSelections_ExamSelectionId",

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clinic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250421172048_on delete cascades")]
-    partial class ondeletecascades
+    [Migration("20250501100629_init 3")]
+    partial class init3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -192,11 +192,11 @@ namespace Clinic.Migrations
 
             modelBuilder.Entity("Clinic.Models.Appointment", b =>
                 {
-                    b.Property<int>("AppointemntId")
+                    b.Property<int>("AppointmentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppointemntId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppointmentId"));
 
                     b.Property<DateTime>("AppointmentDate")
                         .HasColumnType("datetime2");
@@ -224,7 +224,7 @@ namespace Clinic.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AppointemntId");
+                    b.HasKey("AppointmentId");
 
                     b.HasIndex("DoctorId");
 

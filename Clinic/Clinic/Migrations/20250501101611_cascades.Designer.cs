@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clinic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250417140811_patient_address_relation")]
-    partial class patient_address_relation
+    [Migration("20250501101611_cascades")]
+    partial class cascades
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -192,11 +192,11 @@ namespace Clinic.Migrations
 
             modelBuilder.Entity("Clinic.Models.Appointment", b =>
                 {
-                    b.Property<int>("AppointemntId")
+                    b.Property<int>("AppointmentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppointemntId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppointmentId"));
 
                     b.Property<DateTime>("AppointmentDate")
                         .HasColumnType("datetime2");
@@ -224,7 +224,7 @@ namespace Clinic.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AppointemntId");
+                    b.HasKey("AppointmentId");
 
                     b.HasIndex("DoctorId");
 
@@ -675,7 +675,7 @@ namespace Clinic.Migrations
                         .IsRequired();
 
                     b.HasOne("Clinic.Models.Patient", "Patient")
-                        .WithMany()
+                        .WithMany("Appointments")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -876,6 +876,11 @@ namespace Clinic.Migrations
                     b.Navigation("LabExams");
 
                     b.Navigation("PhysicalExams");
+                });
+
+            modelBuilder.Entity("Clinic.Models.Patient", b =>
+                {
+                    b.Navigation("Appointments");
                 });
 #pragma warning restore 612, 618
         }

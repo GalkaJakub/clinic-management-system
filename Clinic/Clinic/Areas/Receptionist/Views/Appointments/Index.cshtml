@@ -49,11 +49,11 @@
                         <td>@((appointment.AppointmentDate.Value.ToString("g")))</td>
                         <td>@appointment.Status</td>
                             <td>
-                                <a asp-action="UpdateAppointment" asp-route-appointmentId="@appointment.AppointemntId"
+                                <a asp-action="UpdateAppointment" asp-route-appointmentId="@appointment.AppointmentId"
                                    class="btn btn-info">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <a asp-action="DeleteAppointment" asp-route-appointmentId="@appointment.AppointemntId" 
+                                <a asp-action="DeleteAppointment" asp-route-appointmentId="@appointment.AppointmentId" 
                                 class="btn btn-danger">
                                 <i class="bi bi-trash-fill"></i></a>
                             </td>
