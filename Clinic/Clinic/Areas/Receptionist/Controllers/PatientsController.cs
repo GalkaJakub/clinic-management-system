@@ -22,17 +22,24 @@ namespace Clinic.Areas.Receptionist.Controllers
             this.db = db;
         }
 
-        public IActionResult Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, int? pageIndex, int pageSize = 1)
         {
-            var patients = db.Patients.Include(x => x.Address).ToList();
+            ViewData["CurrentFilter"] = searchString;
+
+            IQueryable<Patient> patientsQuery = db.Patients.Include(x => x.Address);
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                patients = patients.Where(x => x.Name.Contains(searchString)
-                || x.Surname.Contains(searchString) || x.PESEL.Contains(searchString)).ToList();
+                patientsQuery = patientsQuery.Where(p =>
+                    p.Name.Contains(searchString) ||
+                    p.Surname.Contains(searchString) ||
+                    p.PESEL.Contains(searchString));
             }
 
-            return View(patients);
+            int pageNumber = pageIndex ?? 1;
+            var paginatedPatients = await PaginatedList<Patient>.CreateAsync(patientsQuery, pageNumber, pageSize);
+
+            return View(paginatedPatients);
         }
 
         public IActionResult Create()
