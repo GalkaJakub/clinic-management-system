@@ -12,5 +12,6 @@ namespace Clinic.Models
         public Admin? Admin { get; set; }
         public LabTechnician? LabTechnician { get; set; }
         public HeadLabTechnician? HeadLabTechnician { get; set; }
+
     }
 }
