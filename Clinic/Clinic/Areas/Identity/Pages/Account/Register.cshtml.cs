@@ -118,6 +118,11 @@ namespace Clinic.Areas.Identity.Pages.Account
             public string? Role { get; set; }
             public IEnumerable<SelectListItem> RoleList { get; set; }
 
+            [Display(Name = "NPWZ")]
+            [MaxLength(6)]
+            [MinLength(6)]
+            public string NPWZ { get; set; }
+
         }
 
 
@@ -244,7 +249,7 @@ namespace Clinic.Areas.Identity.Pages.Account
                     db.Doctors.Add(new Models.Doctor
                     {
                         ApplicationUserId = user.Id,
-                        NPWZ = "123456"
+                        NPWZ = Input.NPWZ
                     });
                     break;
                 case SD.Role_Admin:

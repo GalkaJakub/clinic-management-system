@@ -44,9 +44,15 @@
             </div>
 
             <div class="form-floating mb-3">
-                <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
+                <select id="roleSelect" asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
                     <option disabled selected>Select Role</option>
                 </select>
+            </div>
+
+            <div id="npwzDiv" class="form-floating mb-3">
+                <input asp-for="Input.NPWZ" class="form-control" autocomplete="username" aria-required="true" placeholder="NPWZ" />
+                <label asp-for="Input.NPWZ">NPWZ</label>
+                <span asp-validation-for="Input.NPWZ" class="text-danger"></span>
             </div>
 
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
@@ -56,4 +62,18 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const roleSelect = document.getElementById("roleSelect");
+            const npwz = document.getElementById("npwzDiv");
+
+            function toggleNPWZ() {
+                npwz.style.display = roleSelect.value === "Doctor" ? "block" : "none";
+            }
+
+            roleSelect.addEventListener("change", toggleNPWZ);
+            toggleNPWZ(); // ustawia stan na starcie
+        });
+
+    </script>
 }
