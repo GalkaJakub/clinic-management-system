@@ -26,9 +26,14 @@ namespace Clinic.Areas.Admin.Controllers
             this.roleManager = roleManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string userName)
         {
             var users = userManager.Users.Include(x => x.Doctor).ToList();
+            if (!String.IsNullOrEmpty(userName))
+            {
+                users = users.Where(x => (x.Surname + x.Name).ToLower().Contains(userName.ToLower())).ToList();
+            }
+
             var model = new List<UserWithRole>();
             foreach (var user in users)
             {

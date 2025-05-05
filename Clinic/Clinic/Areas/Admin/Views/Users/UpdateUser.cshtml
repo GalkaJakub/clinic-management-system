@@ -37,21 +37,18 @@
                 <span asp-validation-for="ApplicationUser.UserName" class="text-danger"></span>
             </div>
 
-            <div class="form-floating mb-3">
+            <div class="form mb-3">
                 <select id="roleSelect" asp-for="Role" asp-items="@Model.RoleList" class="form-select">
                     <option disabled selected>Select Role</option>
                 </select>
             </div>
 
-            @if (Model.ApplicationUser.Doctor != null)
-            {
-                <div id="npwzDiv" class="form-floating mb-3">
-                    <input asp-for="ApplicationUser.Doctor.NPWZ" class="form-control" aria-required="true" placeholder="NPWZ" />
-                    <label asp-for="ApplicationUser.Doctor.NPWZ">NPWZ</label>
-                    <input type="hidden" asp-for="ApplicationUser.Doctor.ApplicationUserId" />
-                    <input type="hidden" asp-for="ApplicationUser.Doctor.DoctorId" />
-                </div>
-            }
+            <div id="npwzDiv" class="form-floating mb-3">
+                <input asp-for="ApplicationUser.Doctor.NPWZ" class="form-control aria-required="true" placeholder="NPWZ" />
+                <label asp-for="ApplicationUser.Doctor.NPWZ">NPWZ</label>
+                <input type="hidden" asp-for="ApplicationUser.Doctor.ApplicationUserId" />
+                <input type="hidden" asp-for="ApplicationUser.Doctor.DoctorId" />
+            </div>
 
             <button id="updateSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Update Account</button>
         </form>
