@@ -44,8 +44,9 @@
             </div>
 
             <div id="npwzDiv" class="form-floating mb-3">
-                <input asp-for="ApplicationUser.Doctor.NPWZ" class="form-control aria-required="true" placeholder="NPWZ" />
+                <input asp-for="ApplicationUser.Doctor.NPWZ" class="form-control aria-required="true" placeholder="NPWZ" required="true" minlength="6" maxlength="6" />
                 <label asp-for="ApplicationUser.Doctor.NPWZ">NPWZ</label>
+                <span asp-validation-for="ApplicationUser.Doctor.NPWZ" class="text-danger"></span>
                 <input type="hidden" asp-for="ApplicationUser.Doctor.ApplicationUserId" />
                 <input type="hidden" asp-for="ApplicationUser.Doctor.DoctorId" />
             </div>

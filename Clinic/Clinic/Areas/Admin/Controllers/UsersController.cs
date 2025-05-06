@@ -113,7 +113,7 @@ namespace Clinic.Areas.Admin.Controllers
 
                     if (currentRole == newRole)
                     {
-                        if (model.ApplicationUser.Doctor != null)
+                        if (model.ApplicationUser.Doctor.DoctorId != null)
                         {
                             user.Doctor.NPWZ = model.ApplicationUser.Doctor.NPWZ;
                         }
@@ -136,6 +136,8 @@ namespace Clinic.Areas.Admin.Controllers
             return View(model);
 
         }
+
+
 
         private async Task UpdateUserRoleAsync(ApplicationUser user, UpdateUserVM model)
         {
