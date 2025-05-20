@@ -62,12 +62,16 @@ namespace Clinic.Areas.Admin.Controllers
             return RedirectToPage("/Account/Register", new { area = "Identity" });
         }
 
-        public async Task<ActionResult> DeleteUser(string userId)
+        public async Task<ActionResult> SetActive(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
             if (user != null)
             {
-                await userManager.DeleteAsync(user);
+                if (user.IsActive)
+                    user.IsActive = false;
+                else 
+                    user.IsActive = true;
+                db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             return View();

@@ -133,6 +133,9 @@ namespace Clinic.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -241,17 +244,16 @@ namespace Clinic.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DoctorId"));
 
                     b.Property<string>("ApplicationUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("NPWZ")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DoctorId");
 
                     b.HasIndex("ApplicationUserId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[ApplicationUserId] IS NOT NULL");
 
                     b.ToTable("Doctors");
                 });
@@ -694,9 +696,7 @@ namespace Clinic.Migrations
                 {
                     b.HasOne("Clinic.Models.ApplicationUser", "ApplicationUser")
                         .WithOne("Doctor")
-                        .HasForeignKey("Clinic.Models.Doctor", "ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Clinic.Models.Doctor", "ApplicationUserId");
 
                     b.Navigation("ApplicationUser");
                 });

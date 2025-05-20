@@ -38,6 +38,7 @@
                         <th scope="col">Email</th>
                         <th scope="col">Role</th>
                         <th scope="col">NPWZ</th>
+                        <th scope="col">Active</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -60,13 +61,28 @@
                             }
 
                             <td>
+                                @if (m.User.IsActive)
+                                {
+                                    <a asp-action="SetActive" asp-route-UserId="@m.User.Id"
+                                    class="btn btn-success">
+                                        <i class="bi bi-check"></i>
+                                    </a>
+
+                                }
+                                else
+                                {
+                                    <a asp-action="SetActive" asp-route-UserId="@m.User.Id"
+                                    class="btn btn-danger">
+                                        <i class="bi bi-x"></i>
+                                    </a>
+                                }
+                            </td>
+
+
+                            <td>
                                 <a asp-action="UpdateUser" asp-route-UserId="@m.User.Id"
                                    class="btn btn-info">
                                     <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <a asp-action="DeleteUser" asp-route-UserId="@m.User.Id"
-                                   class="btn btn-danger">
-                                    <i class="bi bi-trash-fill"></i>
                                 </a>
                             </td>
                         </tr>
