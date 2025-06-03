@@ -65,11 +65,23 @@ namespace Clinic.Areas.Receptionist.Controllers
                 else
                     return NotFound();
 
+                var doctor = db.Doctors.FirstOrDefault(x => x.DoctorId == model.Appointment.DoctorId);
+                var appointmentTime = model.Appointment.AppointmentDate;
+
+                var hasConflict = findConflict(model);
+                if (hasConflict)
+                {
+                    ModelState.AddModelError("Appointment.AppointmentDate", "The selected doctor already has an appointment within 30 minutes of this time.");
+                    model.Patients = db.Patients.ToList();
+                    model.Doctors = db.Doctors.Include(x => x.ApplicationUser).ToList();
+                    return View(model);
+                }
 
                 db.Appointments.Add(model.Appointment);
                 db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
+
             model.Patients = db.Patients.ToList();
             model.Doctors = db.Doctors.Include(x => x.ApplicationUser).ToList();
             return View(model);
@@ -97,6 +109,14 @@ namespace Clinic.Areas.Receptionist.Controllers
             {
                 var newAppointment = model.Appointment;
                 var appointment = db.Appointments.Find(newAppointment.AppointemntId);
+                var hasConflict = findConflict(model);
+                if (hasConflict)
+                {
+                    ModelState.AddModelError("Appointment.AppointmentDate", "The selected doctor already has an appointment within 30 minutes of this time.");
+                    model.Patients = db.Patients.ToList();
+                    model.Doctors = db.Doctors.Include(x => x.ApplicationUser).ToList();
+                    return View(model);
+                }
                 if (appointment != null)
                 {
                     appointment.AppointmentDate = newAppointment.AppointmentDate;
@@ -121,6 +141,17 @@ namespace Clinic.Areas.Receptionist.Controllers
                 db.SaveChanges();
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool findConflict(AppointmentVM model)
+        {
+            var doctor = db.Doctors.FirstOrDefault(x => x.DoctorId == model.Appointment.DoctorId);
+            var appointmentTime = model.Appointment.AppointmentDate;
+
+            var hasConflict = db.Appointments.Any(x => x.DoctorId == doctor.DoctorId && x.AppointmentDate >= appointmentTime.Value.AddMinutes(-30) && x.AppointmentDate <= appointmentTime.Value.AddMinutes(30));
+
+            return hasConflict;
+
         }
     }
 }
