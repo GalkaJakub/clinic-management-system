@@ -2,18 +2,22 @@
 @model AppointmentVM
 <h1>Create new appointment</h1>
 
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
 <form method="post" asp-controller="Appointments" asp-action="CreateAppointment">
     <div class="mb-3">
         <label asp-for="Appointment.PatientId" class="form-label">Patient</label>
-        <select asp-for="Appointment.PatientId" class="form-select w-100">
+        <select asp-for="Appointment.PatientId" class="form-select w-100" id="patientSelect">
             <option value="">Choose a patient</option>
             @foreach (var patient in Model.Patients)
             {
-                <option value="@patient.PatientId">@(patient.Name) @(patient.Surname)</option>
+                <option value="@patient.PatientId">@patient.Name @patient.Surname</option>
             }
         </select>
         <span asp-validation-for="Appointment.PatientId" class="text-danger"></span>
     </div>
+
 
     <div class="mb-3">
         <label asp-for="Appointment.Description" class="form-label">Description</label>
@@ -50,3 +54,14 @@
 
 
 </form>
+
+<script>
+    new TomSelect("#patientSelect", {
+        create: false,
+        sortField: {
+            field: "text",
+            direction: "asc"
+        },
+        placeholder: "Search for a patient..."
+    });
+</script>

@@ -27,7 +27,6 @@
             </form>
         </div>
 
-
         <div class="table-responsive shadow-sm rounded">
             <table class="table table-hover table-striped align-middle border rounded mt-4 mb-4">
                 <thead class="table-light">
@@ -64,7 +63,7 @@
                                 @if (m.User.IsActive)
                                 {
                                     <a asp-action="SetActive" asp-route-UserId="@m.User.Id"
-                                    class="btn btn-success">
+                                       class="btn btn-success">
                                         <i class="bi bi-check"></i>
                                     </a>
 
@@ -72,7 +71,7 @@
                                 else
                                 {
                                     <a asp-action="SetActive" asp-route-UserId="@m.User.Id"
-                                    class="btn btn-danger">
+                                       class="btn btn-danger">
                                         <i class="bi bi-x"></i>
                                     </a>
                                 }
