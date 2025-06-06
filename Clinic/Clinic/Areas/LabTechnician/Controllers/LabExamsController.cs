@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using System.Drawing.Printing;
+using System.Security.Claims;
 
 
 namespace Clinic.Areas.LabTechnician.Controllers
@@ -52,6 +53,7 @@ namespace Clinic.Areas.LabTechnician.Controllers
 
             var labExam = db.LabExams
                 .Include(x => x.ExamSelection)
+                .Include(x => x.Appointment)
                 .FirstOrDefault(x => x.LabExamId == labExamId);
 
             var model = new LabExamVM
@@ -102,6 +104,21 @@ namespace Clinic.Areas.LabTechnician.Controllers
                     labExam.HeadLabTechnicianId = newLabExam.HeadLabTechnicianId;
                     labExam.ExamSelectionId = newLabExam.ExamSelectionId;
 
+
+                    string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var labTechnician = db.LabTechnicians.FirstOrDefault(lt => lt.ApplicationUserId == userId);
+                    if (labTechnician != null)
+                    {
+                        labExam.LabTechnicianId = labTechnician.LabTechnicianId;
+                    }
+                    else
+                    {
+                        labExam.LabTechnicianId = null;
+                        Console.WriteLine("error assigning labtechnician, labtechnician ID is null");
+                    }
+
+
+
                     db.SaveChanges();
                 }
                 else
@@ -116,16 +133,21 @@ namespace Clinic.Areas.LabTechnician.Controllers
                 return View(model);
         }
 
-        public IActionResult DeleteLabExam(int labExamId)
+        [HttpPost]
+        public IActionResult CancelExam(int labExamId, string cancelReason)
         {
-            var labExam = db.LabExams.Find(labExamId);
+            var labExam = db.LabExams.FirstOrDefault(x => x.LabExamId == labExamId);
             if (labExam != null)
             {
-                db.LabExams.Remove(labExam);
+                labExam.Status = ExamStatus.Canceled;
+                labExam.CancelationReason = cancelReason;
+                Console.WriteLine($"Canceling lab exam {labExamId} with reason: {cancelReason}");
                 db.SaveChanges();
             }
+
             return RedirectToAction(nameof(Index));
         }
+
 
     }
 }

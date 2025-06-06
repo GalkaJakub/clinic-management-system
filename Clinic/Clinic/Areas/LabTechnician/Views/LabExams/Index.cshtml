@@ -31,14 +31,14 @@
                 <tbody>
                     @foreach (var labExam in Model.Items)
                     {
-                        <tr>
-                            <td>@(labExam.RequestDate)</td>
-                            <td>@(labExam.ExamDate)</td>
-                            <td>@(labExam.Status)</td>
-                            <td>@(labExam.LabTechnician.ApplicationUser.Name != null ? labExam.LabTechnician.ApplicationUser.Name : "-")</td>
+                        <tr >
+                            <td>@(labExam.RequestDate != null ? labExam.RequestDate : "-")</td>
+                            <td>@(labExam.ExamDate != null ? labExam.ExamDate : "-")</td>
+                            <td>@(labExam.Status != null ? labExam.Status : "-")</td>
+                            <td>@(labExam.LabTechnician?.ApplicationUser?.Name ?? "-")</td>
                             <td>
                                 <a asp-action="LabExam" asp-route-labExamId="@labExam.LabExamId"
-                                   class="btn btn-info">
+                                    class="btn btn-info">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                             </td>
@@ -138,3 +138,4 @@
             </div>
         </div>
     </div>
+  

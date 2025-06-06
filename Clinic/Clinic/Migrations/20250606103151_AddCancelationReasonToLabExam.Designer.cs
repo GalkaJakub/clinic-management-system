@@ -4,6 +4,7 @@ using Clinic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clinic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250606103151_AddCancelationReasonToLabExam")]
+    partial class AddCancelationReasonToLabExam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -347,7 +350,7 @@ namespace Clinic.Migrations
                     b.Property<int>("HeadLabTechnicianId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LabTechnicianId")
+                    b.Property<int>("LabTechnicianId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RequestDate")
@@ -737,7 +740,9 @@ namespace Clinic.Migrations
 
                     b.HasOne("Clinic.Models.LabTechnician", "LabTechnician")
                         .WithMany()
-                        .HasForeignKey("LabTechnicianId");
+                        .HasForeignKey("LabTechnicianId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Appointment");
 
