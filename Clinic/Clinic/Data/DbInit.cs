@@ -10,6 +10,24 @@ namespace Clinic.Data
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
 
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            string[] roles = {
+                SD.Role_Admin,
+                SD.Role_Doctor,
+                SD.Role_Receptionist,
+                SD.Role_LabTechnician,
+                SD.Role_HeadLabTechnician
+            };
+
+            foreach (string role in roles)
+            {
+                if (!await roleManager.RoleExistsAsync(role))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
+
             string email = "admin@admin.com";
             string password = "AdminAdmin1!";
             string roleName = "Admin";
