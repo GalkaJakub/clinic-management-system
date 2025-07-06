@@ -20,13 +20,13 @@ namespace Clinic.Data
                 SD.Role_HeadLabTechnician
             };
 
-            foreach (string role in roles)
+/*            foreach (string role in roles)
             {
                 if (!await roleManager.RoleExistsAsync(role))
                 {
                     await roleManager.CreateAsync(new IdentityRole(role));
                 }
-            }
+            }*/
 
             string email = "admin@admin.com";
             string password = "AdminAdmin1!";
