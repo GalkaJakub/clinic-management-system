@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
+using System.Drawing.Printing;
+using System.Security.Claims;
 
 
 namespace Clinic.Areas.LabTechnician.Controllers
@@ -22,11 +24,27 @@ namespace Clinic.Areas.LabTechnician.Controllers
             this.db = db;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string searchString, int? pageIndex, int pageSize = 10)
         {
-            var labExams = db.LabExams.Include(x => x.LabTechnician).ThenInclude(x => x.ApplicationUser).ToList();
+            ViewData["CurrentFilter"] = searchString;
 
-            return View(labExams);
+            IQueryable<LabExam> labExamsQuery = db.LabExams
+                .Include(x => x.LabTechnician)
+                .ThenInclude(x => x.ApplicationUser);
+
+            // Jeśli istnieje funkcjonalność wyszukiwania
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                labExamsQuery = labExamsQuery.Where(x =>
+                    x.LabTechnician.ApplicationUser.Name.Contains(searchString) ||
+                    x.LabTechnician.ApplicationUser.Surname.Contains(searchString));
+            }
+
+
+            int pageNumber = pageIndex ?? 1;
+            var paginatedExams = await PaginatedList<LabExam>.CreateAsync(labExamsQuery, pageNumber, pageSize);
+
+            return View(paginatedExams);
         }
 
 
@@ -35,6 +53,7 @@ namespace Clinic.Areas.LabTechnician.Controllers
 
             var labExam = db.LabExams
                 .Include(x => x.ExamSelection)
+                .Include(x => x.Appointment)
                 .FirstOrDefault(x => x.LabExamId == labExamId);
 
             var model = new LabExamVM
@@ -85,6 +104,22 @@ namespace Clinic.Areas.LabTechnician.Controllers
                     labExam.HeadLabTechnicianId = newLabExam.HeadLabTechnicianId;
                     labExam.ExamSelectionId = newLabExam.ExamSelectionId;
 
+
+                    string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var labTechnician = db.LabTechnicians.FirstOrDefault(lt => lt.ApplicationUserId == userId);
+                    if (labTechnician != null)
+                    {
+                        labExam.LabTechnicianId = labTechnician.LabTechnicianId;
+                        labExam.ExamDate = DateTime.Now;
+                    }
+                    else
+                    {
+                        labExam.LabTechnicianId = null;
+                        Console.WriteLine("error assigning labtechnician, labtechnician ID is null");
+                    }
+
+
+
                     db.SaveChanges();
                 }
                 else
@@ -98,6 +133,22 @@ namespace Clinic.Areas.LabTechnician.Controllers
 
                 return View(model);
         }
+
+        [HttpPost]
+        public IActionResult CancelExam(int labExamId, string cancelReason)
+        {
+            var labExam = db.LabExams.FirstOrDefault(x => x.LabExamId == labExamId);
+            if (labExam != null)
+            {
+                labExam.Status = ExamStatus.Canceled;
+                labExam.CancelationReason = cancelReason;
+                Console.WriteLine($"Canceling lab exam {labExamId} with reason: {cancelReason}");
+                db.SaveChanges();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
 
     }
 }

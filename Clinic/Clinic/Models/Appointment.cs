@@ -6,7 +6,7 @@ namespace Clinic.Models
     public class Appointment
     {
         [Key]
-        public int AppointemntId { get; set; }
+        public int AppointmentId { get; set; }
         [Required]
         public string Description { get; set; }
         public string? Diagnosis { get; set; }

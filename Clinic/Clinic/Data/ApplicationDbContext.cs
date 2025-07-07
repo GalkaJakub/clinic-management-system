@@ -42,9 +42,26 @@ namespace Clinic.Data
                 .HasOne(x => x.Address)
                 .WithMany(x => x.Patients) 
                 .HasForeignKey(x => x.AddressId);
-                
-            
-            
+
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Patient)
+                .WithMany(p => p.Appointments)
+                .HasForeignKey(a => a.PatientId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<LabExam>()
+                .HasOne(a => a.Appointment)
+                .WithMany(p => p.LabExams)
+                .HasForeignKey(a => a.AppointmentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PhysicalExam>()
+                .HasOne(a => a.Appointment)
+                .WithMany(p => p.PhysicalExams)
+                .HasForeignKey(a => a.AppointmentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<ExamSelection>().Property(x => x.Type).HasConversion<string>();
             modelBuilder.Entity<Appointment>().Property(x => x.Status).HasConversion<string>();
             modelBuilder.Entity<LabExam>().Property(x => x.Status).HasConversion<string>();

@@ -22,21 +22,45 @@ namespace Clinic.Areas.Receptionist.Controllers
             this.userManager = userManager;
         }
 
-        public IActionResult Index(string patientName, string doctorName)
+        public async Task<IActionResult> Index(
+    string patientName,
+    string doctorName,
+    int? pageIndex,
+    int pageSize = 10)
         {
-            var appointments = db.Appointments.Include(x => x.Doctor).ThenInclude(x => x.ApplicationUser).Include(x => x.Patient).ToList();
+            ViewData["PatientNameFilter"] = patientName;
+            ViewData["DoctorNameFilter"] = doctorName;
 
-            if (!String.IsNullOrEmpty(patientName))
+            IQueryable<Appointment> appointmentsQuery = db.Appointments
+                .Include(x => x.Doctor)
+                    .ThenInclude(x => x.ApplicationUser)
+                .Include(x => x.Patient)
+                .AsNoTracking();
+
+            // Filtrowanie po pacjencie
+            if (!string.IsNullOrEmpty(patientName))
             {
-                appointments = appointments.Where(x => (x.Patient.Name + " " + x.Patient.Surname).ToLower().Contains(patientName.ToLower())).ToList();
+                appointmentsQuery = appointmentsQuery.Where(x =>
+                    (x.Patient.Name + " " + x.Patient.Surname)
+                        .ToLower()
+                        .Contains(patientName.Trim().ToLower()));
             }
 
-            if (!String.IsNullOrEmpty(doctorName))
+            // Filtrowanie po lekarzu
+            if (!string.IsNullOrEmpty(doctorName))
             {
-                appointments = appointments.Where(x => (x.Doctor.ApplicationUser.Name + " " + x.Doctor.ApplicationUser.Surname).ToLower().Contains(doctorName.ToLower())).ToList();
+                appointmentsQuery = appointmentsQuery.Where(x =>
+                    (x.Doctor.ApplicationUser.Name + " " + x.Doctor.ApplicationUser.Surname)
+                        .ToLower()
+                        .Contains(doctorName.Trim().ToLower()));
             }
 
-            return View(appointments);
+            // Stronicowanie
+            int pageNumber = pageIndex ?? 1;
+            var paginatedAppointments = await PaginatedList<Appointment>
+                .CreateAsync(appointmentsQuery, pageNumber, pageSize);
+
+            return View(paginatedAppointments);
         }
 
         public IActionResult CreateAppointment()
@@ -108,6 +132,7 @@ namespace Clinic.Areas.Receptionist.Controllers
             if (ModelState.IsValid)
             {
                 var newAppointment = model.Appointment;
+<<<<<<< HEAD
                 var appointment = db.Appointments.Find(newAppointment.AppointemntId);
                 var hasConflict = findConflict(model);
                 if (hasConflict)
@@ -117,6 +142,9 @@ namespace Clinic.Areas.Receptionist.Controllers
                     model.Doctors = db.Doctors.Include(x => x.ApplicationUser).ToList();
                     return View(model);
                 }
+=======
+                var appointment = db.Appointments.Find(newAppointment.AppointmentId);
+>>>>>>> patinet/database_changes
                 if (appointment != null)
                 {
                     appointment.AppointmentDate = newAppointment.AppointmentDate;

@@ -16,12 +16,13 @@ namespace Clinic.Models
         public ExamStatus Status { get; set; }
         public int AppointmentId { get; set; }
         public Appointment Appointment { get; set; }
-        public int LabTechnicianId { get; set; }
-        public LabTechnician LabTechnician { get; set; }
+        public int? LabTechnicianId { get; set; }
+        public LabTechnician? LabTechnician { get; set; }
         public int HeadLabTechnicianId { get; set; }
         public HeadLabTechnician HeadLabTechnician { get; set; }
         public string ExamSelectionId { get; set; }
         public ExamSelection ExamSelection { get; set; }
+        public string? CancelationReason { get; set; }
 
     }
 }
