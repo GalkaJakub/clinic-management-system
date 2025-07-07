@@ -311,7 +311,7 @@ namespace Clinic.Migrations
                 name: "Appointments",
                 columns: table => new
                 {
-                    AppointemntId = table.Column<int>(type: "int", nullable: false)
+                    AppointmentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Diagnosis = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -324,7 +324,7 @@ namespace Clinic.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Appointments", x => x.AppointemntId);
+                    table.PrimaryKey("PK_Appointments", x => x.AppointmentId);
                     table.ForeignKey(
                         name: "FK_Appointments_Doctors_DoctorId",
                         column: x => x.DoctorId,
@@ -359,9 +359,10 @@ namespace Clinic.Migrations
                     AcceptDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AppointmentId = table.Column<int>(type: "int", nullable: false),
-                    LabTechnicianId = table.Column<int>(type: "int", nullable: false),
+                    LabTechnicianId = table.Column<int>(type: "int", nullable: true),
                     HeadLabTechnicianId = table.Column<int>(type: "int", nullable: false),
-                    ExamSelectionId = table.Column<string>(type: "nvarchar(10)", nullable: false)
+                    ExamSelectionId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    CancelationReason = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -370,7 +371,7 @@ namespace Clinic.Migrations
                         name: "FK_LabExams_Appointments_AppointmentId",
                         column: x => x.AppointmentId,
                         principalTable: "Appointments",
-                        principalColumn: "AppointemntId",
+                        principalColumn: "AppointmentId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_LabExams_ExamSelections_ExamSelectionId",
@@ -388,8 +389,7 @@ namespace Clinic.Migrations
                         name: "FK_LabExams_LabTechnicians_LabTechnicianId",
                         column: x => x.LabTechnicianId,
                         principalTable: "LabTechnicians",
-                        principalColumn: "LabTechnicianId",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "LabTechnicianId");
                 });
 
             migrationBuilder.CreateTable(
@@ -409,7 +409,7 @@ namespace Clinic.Migrations
                         name: "FK_PhysicalExams_Appointments_AppointmentId",
                         column: x => x.AppointmentId,
                         principalTable: "Appointments",
-                        principalColumn: "AppointemntId",
+                        principalColumn: "AppointmentId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PhysicalExams_ExamSelections_ExamSelectionId",

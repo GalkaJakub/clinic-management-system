@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clinic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250626190149_init")]
+    [Migration("20250707154904_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -195,11 +195,11 @@ namespace Clinic.Migrations
 
             modelBuilder.Entity("Clinic.Models.Appointment", b =>
                 {
-                    b.Property<int>("AppointemntId")
+                    b.Property<int>("AppointmentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppointemntId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppointmentId"));
 
                     b.Property<DateTime>("AppointmentDate")
                         .HasColumnType("datetime2");
@@ -227,7 +227,7 @@ namespace Clinic.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AppointemntId");
+                    b.HasKey("AppointmentId");
 
                     b.HasIndex("DoctorId");
 
@@ -333,6 +333,9 @@ namespace Clinic.Migrations
                     b.Property<int>("AppointmentId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CancelationReason")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DoctorsNotes")
                         .HasColumnType("nvarchar(max)");
 
@@ -349,7 +352,7 @@ namespace Clinic.Migrations
                     b.Property<int>("HeadLabTechnicianId")
                         .HasColumnType("int");
 
-                    b.Property<int>("LabTechnicianId")
+                    b.Property<int?>("LabTechnicianId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RequestDate")
@@ -677,7 +680,7 @@ namespace Clinic.Migrations
                         .IsRequired();
 
                     b.HasOne("Clinic.Models.Patient", "Patient")
-                        .WithMany()
+                        .WithMany("Appointments")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -737,9 +740,7 @@ namespace Clinic.Migrations
 
                     b.HasOne("Clinic.Models.LabTechnician", "LabTechnician")
                         .WithMany()
-                        .HasForeignKey("LabTechnicianId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LabTechnicianId");
 
                     b.Navigation("Appointment");
 
@@ -876,6 +877,11 @@ namespace Clinic.Migrations
                     b.Navigation("LabExams");
 
                     b.Navigation("PhysicalExams");
+                });
+
+            modelBuilder.Entity("Clinic.Models.Patient", b =>
+                {
+                    b.Navigation("Appointments");
                 });
 #pragma warning restore 612, 618
         }
