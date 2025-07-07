@@ -132,8 +132,7 @@ namespace Clinic.Areas.Receptionist.Controllers
             if (ModelState.IsValid)
             {
                 var newAppointment = model.Appointment;
-<<<<<<< HEAD
-                var appointment = db.Appointments.Find(newAppointment.AppointemntId);
+                var appointment = db.Appointments.Find(newAppointment.AppointmentId);
                 var hasConflict = findConflict(model);
                 if (hasConflict)
                 {
@@ -142,9 +141,6 @@ namespace Clinic.Areas.Receptionist.Controllers
                     model.Doctors = db.Doctors.Include(x => x.ApplicationUser).ToList();
                     return View(model);
                 }
-=======
-                var appointment = db.Appointments.Find(newAppointment.AppointmentId);
->>>>>>> patinet/database_changes
                 if (appointment != null)
                 {
                     appointment.AppointmentDate = newAppointment.AppointmentDate;

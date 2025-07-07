@@ -1,9 +1,8 @@
-﻿@using Clinic.Models.ViewModels
+﻿﻿@using Clinic.Models.ViewModels
 @model AppointmentVM
 <h1>Create new appointment</h1>
 
-<link href="https://cdn.j
-elivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
 
 <form method="post" asp-controller="Appointments" asp-action="CreateAppointment">
@@ -40,7 +39,7 @@ elivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
     <div class="mb-3">
         <label asp-for="Appointment.AppointmentDate" class="form-label">Appointment Date</label>
         <input type="datetime-local" asp-for="Appointment.AppointmentDate" class="form-control w-100"
-        min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")"/>
+               min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
         <span asp-validation-for="Appointment.AppointmentDate" class="text-danger"></span>
     </div>
 

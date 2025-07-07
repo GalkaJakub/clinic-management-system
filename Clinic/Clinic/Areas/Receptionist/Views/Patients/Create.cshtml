@@ -1,9 +1,8 @@
-﻿@using Clinic.Models.ViewModels
+﻿﻿@using Clinic.Models.ViewModels
 @model PatientVM
 <h1>Add a Patient</h1>
 
-<link href="https://cdn.j
-elivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
 
 <form method="post" asp-controller="Patients" asp-action="Create" class="w-100">
@@ -26,7 +25,7 @@ elivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
 
     <label asp-for="Patient.AddressId" class="form-label me-2">Address</label>
     <div class="mb-3 d-flex align-items-center w-100">
-        
+
         <select asp-for="Patient.AddressId" class="form-select w-75" id="addressSelect">
             <option value="">Choose an address</option>
             @foreach (var address in Model.Addresses)
@@ -37,7 +36,7 @@ elivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
             }
         </select>
 
-        
+
         <a asp-action="CreateAddress" class="btn btn-primary ms-2">
             Add New Address
         </a>
