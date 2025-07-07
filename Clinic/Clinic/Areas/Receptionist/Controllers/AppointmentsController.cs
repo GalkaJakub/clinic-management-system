@@ -172,7 +172,7 @@ namespace Clinic.Areas.Receptionist.Controllers
             var doctor = db.Doctors.FirstOrDefault(x => x.DoctorId == model.Appointment.DoctorId);
             var appointmentTime = model.Appointment.AppointmentDate;
 
-            var hasConflict = db.Appointments.Any(x => x.DoctorId == doctor.DoctorId && x.AppointmentDate >= appointmentTime.Value.AddMinutes(-30) && x.AppointmentDate <= appointmentTime.Value.AddMinutes(30));
+            var hasConflict = db.Appointments.Any(x => x.DoctorId == doctor.DoctorId && x.AppointmentId != model.Appointment.AppointmentId && x.AppointmentDate >= appointmentTime.Value.AddMinutes(-30) && x.AppointmentDate <= appointmentTime.Value.AddMinutes(30));
 
             return hasConflict;
 
