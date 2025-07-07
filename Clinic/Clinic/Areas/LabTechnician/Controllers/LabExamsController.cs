@@ -110,6 +110,7 @@ namespace Clinic.Areas.LabTechnician.Controllers
                     if (labTechnician != null)
                     {
                         labExam.LabTechnicianId = labTechnician.LabTechnicianId;
+                        labExam.ExamDate = DateTime.Now;
                     }
                     else
                     {
