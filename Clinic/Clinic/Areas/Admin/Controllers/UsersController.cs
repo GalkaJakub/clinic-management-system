@@ -185,7 +185,7 @@ namespace Clinic.Areas.Admin.Controllers
                     });
                     break;
                 case SD.Role_Doctor:
-                    db.Doctors.Add(new Doctor
+                    db.Doctors.Add(new Clinic.Models.Doctor
                     {
                         ApplicationUserId = user.Id,
                         NPWZ = model.ApplicationUser.Doctor?.NPWZ

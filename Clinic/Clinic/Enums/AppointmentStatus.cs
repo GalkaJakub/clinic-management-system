@@ -4,6 +4,8 @@
     {
         Awaiting,
         InProgress,
-        Completed
+        Completed,
+        Cancelled
     }
+
 }
