@@ -5,7 +5,7 @@
     ViewData["Title"] = "Appointment";
 }
 
-<h3 class="mb-4">Edycja wizyty</h3>
+<h3 class="mb-4">Edit Appointment</h3>
 
 <form method="post" asp-action="UpdateAppointment">
     <input type="hidden" asp-for="Appointment.AppointmentId" />
@@ -13,18 +13,18 @@
     <input type="hidden" asp-for="@Model.ExamSelections" />
 
     <div class="mb-3">
-        <label class="form-label">Pacjent</label>
+        <label class="form-label">Patient</label>
         <input class="form-control" value="@Model.Appointment.Patient.Name @Model.Appointment.Patient.Surname" disabled />
     </div>
 
     <div class="mb-3">
-        <label asp-for="Appointment.Description" class="form-label">Notatki / diagnoza</label>
+        <label asp-for="Appointment.Description" class="form-label">Notes / Diagnosis</label>
         <textarea asp-for="Appointment.Description" class="form-control" rows="4"></textarea>
         <span asp-validation-for="Appointment.Description" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Badania fizykalne</label>
+        <label class="form-label">Physical Exams</label>
         @if (Model.Appointment.PhysicalExams != null && Model.Appointment.PhysicalExams.Any())
         {
             <ul class="list-group mb-2">
@@ -32,24 +32,24 @@
                 {
                     <li class="list-group-item">
                         <strong>@exam.ExamSelection?.Name (@exam.ExamSelection?.Shortcut)</strong><br />
-                        Wynik: @exam.Result
+                        Result: @exam.Result
                     </li>
                 }
             </ul>
         }
         else
         {
-            <p class="text-muted">Brak badań fizykalnych</p>
+            <p class="text-muted">No physical exams</p>
         }
 
         <a asp-action="AddPhysicalExam" asp-route-appointmentId="@Model.Appointment.AppointmentId"
            class="btn btn-outline-primary btn-sm mt-2">
-            Dodaj badanie fizykalne
+            Add physical exam
         </a>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Badania laboratoryjne</label>
+        <label class="form-label">Laboratory Exams</label>
         @if (Model.Appointment.LabExams != null && Model.Appointment.LabExams.Any())
         {
             <ul class="list-group mb-2">
@@ -58,10 +58,10 @@
                     <li class="list-group-item">
                         <strong>@lab.ExamSelection?.Name (@lab.ExamSelection?.Shortcut)</strong><br />
                         Status: @lab.Status <br />
-                        Data zgłoszenia: @lab.RequestDate.ToString("g")
+                        Requested on: @lab.RequestDate.ToString("g")
                         @if (!string.IsNullOrWhiteSpace(lab.DoctorsNotes))
                         {
-                            <div><em>Notatki: @lab.DoctorsNotes</em></div>
+                            <div><em>Notes: @lab.DoctorsNotes</em></div>
                         }
                     </li>
                 }
@@ -69,17 +69,17 @@
         }
         else
         {
-            <p class="text-muted">Brak badań laboratoryjnych</p>
+            <p class="text-muted">No laboratory exams</p>
         }
 
         <a asp-action="AddLabExam" asp-route-appointmentId="@Model.Appointment.AppointmentId"
            class="btn btn-outline-primary btn-sm mt-2">
-            Dodaj badanie laboratoryjne
+            Add laboratory exam
         </a>
     </div>
 
     <div class="mb-3">
-        <label asp-for="Appointment.Status" class="form-label">Status wizyty</label>
+        <label asp-for="Appointment.Status" class="form-label">Appointment Status</label>
         <select asp-for="Appointment.Status" class="form-select">
             @foreach (var status in Enum.GetValues(typeof(AppointmentStatus)))
             {
@@ -93,10 +93,10 @@
 
     <div class="row mt-4">
         <div class="col-6 text-start">
-            <a asp-action="Index" class="btn btn-secondary">Powrót</a>
+            <a asp-action="Index" class="btn btn-secondary">Back</a>
         </div>
         <div class="col-6 text-end">
-            <input type="submit" value="Zapisz zmiany" class="btn btn-success" />
+            <input type="submit" value="Save Changes" class="btn btn-success" />
         </div>
     </div>
 </form>

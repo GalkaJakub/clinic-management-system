@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<Clinic.Models.Appointment>
 
 @{
-    ViewData["Title"] = "Moje wizyty";
+    ViewData["Title"] = "My Appointments";
 }
 
 <div class="container mt-4">
-    <h3 class="mb-4">Moje wizyty</h3>
+    <h3 class="mb-4">My Appointments</h3>
 
     <div class="table-responsive shadow-sm rounded">
         <table class="table table-hover table-striped align-middle border rounded mt-4 mb-4">
@@ -27,7 +27,7 @@
                         <td>
                             <a asp-action="UpdateAppointment" asp-route-id="@appointment.AppointmentId"
                                class="btn btn-outline-primary btn-sm">
-                                Otwórz
+                                Open
                             </a>
                         </td>
                     </tr>

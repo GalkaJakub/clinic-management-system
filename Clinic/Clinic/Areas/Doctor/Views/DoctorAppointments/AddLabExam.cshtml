@@ -1,7 +1,7 @@
 ﻿@model Clinic.Models.ViewModels.AddLabExamVM
 
 @{
-    ViewData["Title"] = "Dodaj badanie laboratoryjne";
+    ViewData["Title"] = "Add Laboratory Exam";
 }
 
 <h4>Dodaj badanie laboratoryjne</h4>
@@ -11,9 +11,9 @@
     <input type="hidden" asp-for="AvailableExams" />
 
     <div class="mb-3">
-        <label asp-for="ExamSelectionId" class="form-label">Rodzaj badania</label>
+        <label asp-for="ExamSelectionId" class="form-label">Exam Type</label>
         <select asp-for="ExamSelectionId" class="form-select">
-            <option value="">-- Wybierz badanie --</option>
+            <option value="">-- Select exam --</option>
             @foreach (var exam in Model.AvailableExams)
             {
                 <option value="@exam.Shortcut">@exam.Name (@exam.Shortcut)</option>
@@ -23,17 +23,17 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="DoctorsNotes" class="form-label">Notatki dla laboratorium</label>
+        <label asp-for="DoctorsNotes" class="form-label">Doctor's Notes (optional)</label>
         <textarea asp-for="DoctorsNotes" class="form-control" rows="3"></textarea>
         <span asp-validation-for="DoctorsNotes" class="text-danger"></span>
     </div>
 
     <div class="row">
         <div class="col-6 text-start">
-            <a asp-action="UpdateAppointment" asp-route-id="@Model.AppointmentId" class="btn btn-secondary">Anuluj</a>
+            <a asp-action="UpdateAppointment" asp-route-id="@Model.AppointmentId" class="btn btn-secondary">Cancel</a>
         </div>
         <div class="col-6 text-end">
-            <button type="submit" class="btn btn-success">Zapisz badanie</button>
+            <button type="submit" class="btn btn-success">Save Exam</button>
         </div>
     </div>
 </form>
