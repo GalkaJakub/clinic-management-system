@@ -1,0 +1,97 @@
+﻿@model LabExamVM
+
+<h2>Lab Exam Details</h2>
+
+<form id="labExamForm" asp-action="HeadLabExam" method="post">
+    <input type="hidden" asp-for="LabExam.LabExamId" />
+    <input type="hidden" asp-for="LabExam.ExamSelectionId" />
+    <input type="hidden" asp-for="LabExam.AppointmentId" />
+    <input type="hidden" asp-for="LabExam.LabTechnicianId" />
+    <input type="hidden" asp-for="LabExam.HeadLabTechnicianId" />
+    <input type="hidden" asp-for="LabExam.ExamDate" />
+    <input type="hidden" asp-for="LabExam.RequestDate" />
+    <input type="hidden" asp-for="LabExam.DoctorsNotes" />
+
+    @if (Model.LabExam.DoctorsNotes != null)
+    {
+        <div class="card mb-3">
+            <div class="card-header">Doctor Notes</div>
+            <div class="card-body">
+                <p class="card-text">@Model.LabExam.DoctorsNotes</p>
+            </div>
+        </div>
+    }
+
+    @if (Model.LabExam.Appointment.Description != null)
+    {
+        <div class="card mb-3">
+            <div class="card-header">Description</div>
+            <div class="card-body">
+                <p class="card-text">@Model.LabExam.Appointment.Description</p>
+            </div>
+        </div>
+    }
+
+    @if (Model.LabExam.Result != null)
+    {
+        <div class="card mb-3">
+            <div class="card-header">Result</div>
+            <div class="card-body">
+                <p class="card-text">@Model.LabExam.Result</p>
+            </div>
+        </div>
+    }
+
+    @if (Model.LabExam.CancelationReason != null)
+    {
+        <div class="card mb-3">
+            <div class="card-header">Cancelation reason</div>
+            <div class="card-body">
+                <p class="card-text">@Model.LabExam.CancelationReason</p>
+            </div>
+        </div>
+    }
+
+    <div class="mb-3">
+        <label asp-for="LabExam.HeadLabNotes" class="form-label">Head Lab Notes</label>
+        <textarea asp-for="LabExam.HeadLabNotes" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Exam Selection</label>
+        <input class="form-control" value="@Model.ExamSelection?.Name" disabled />
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <div class="d-flex">
+            <a asp-action="Index" class="btn btn-danger">
+                Discard Changes
+            </a>
+
+            <button type="button" class="btn btn-danger ms-3" id="disapproveBtn">
+                Disapprove
+            </button>
+        </div>
+
+        @if (Model.LabExam.Status != Clinic.Enums.ExamStatus.Canceled)
+        {
+            <input type="submit" value="Save Changes" class="btn btn-primary" />
+        }
+        else
+        {
+            <input type="submit" value="Save Changes" class="btn btn-primary" disabled />
+        }
+    </div>
+</form>
+@section Scripts {
+    <script>
+        const form = document.getElementById('labExamForm');
+        const disapproveBtn = document.getElementById('disapproveBtn');
+
+        disapproveBtn.addEventListener('click', function () {
+            form.action = '@Url.Action("Disapprove", "HeadLabExams", new { area = "HeadLabTechnician" })';
+            form.submit();
+        });
+    </script>
+}
+

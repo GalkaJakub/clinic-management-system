@@ -67,6 +67,17 @@
                             </li>
                         }
 
+                        @* sekcja kierownika lab *@
+                        @if (User.IsInRole(SD.Role_HeadLabTechnician))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="HeadLabTechnician"
+                                   asp-controller="HeadLabExams" asp-action="Index">
+                                    Exams
+                                </a>
+                            </li>
+                        }
+
                         @* DODANE DLA LEKARZA *@
                         @if (User.IsInRole(SD.Role_Doctor))
                         {
