@@ -5,23 +5,21 @@ using Clinic.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.IdentityModel.Tokens;
-using System.Drawing.Printing;
 using System.Security.Claims;
 
-
-namespace Clinic.Areas.LabTechnician.Controllers
+namespace Clinic.Areas.HeadLabTechnician.Controllers
 {
-    [Area("LabTechnician")]
-    [Authorize(Roles = SD.Role_LabTechnician)]
-    public class LabExamsController : Controller
-    {
-        private readonly ApplicationDbContext db;
 
-        public LabExamsController(ApplicationDbContext db)
+    [Area("HeadLabTechnician")]
+    [Authorize(Roles = SD.Role_HeadLabTechnician)]
+    public class HeadLabExamsController : Controller
+    {
+
+        private ApplicationDbContext db;
+        public HeadLabExamsController(ApplicationDbContext db)
         {
             this.db = db;
+            
         }
 
         public async Task<IActionResult> Index(string searchString, int? pageIndex, int pageSize = 10)
@@ -30,9 +28,10 @@ namespace Clinic.Areas.LabTechnician.Controllers
 
             IQueryable<LabExam> labExamsQuery = db.LabExams
                 .Include(x => x.LabTechnician)
-                .ThenInclude(x => x.ApplicationUser);
+                .ThenInclude(x => x.ApplicationUser)
+                .Where(x => x.Status == ExamStatus.InProgress || x.Status == ExamStatus.Completed || x.Status == ExamStatus.Disapproved);
 
-            // Jeśli istnieje funkcjonalność wyszukiwania
+            
             if (!string.IsNullOrEmpty(searchString))
             {
                 labExamsQuery = labExamsQuery.Where(x =>
@@ -48,8 +47,7 @@ namespace Clinic.Areas.LabTechnician.Controllers
             return View(paginatedExams);
         }
 
-
-        public IActionResult LabExam(int labExamId)
+        public IActionResult HeadLabExam(int labExamId)
         {
 
             var labExam = db.LabExams
@@ -65,8 +63,9 @@ namespace Clinic.Areas.LabTechnician.Controllers
             return View(model);
         }
 
+
         [HttpPost]
-        public IActionResult LabExam(LabExamVM model)
+        public IActionResult HeadLabExam(LabExamVM model)
         {
 
             ModelState.Remove("LabExam.Appointment");
@@ -98,26 +97,12 @@ namespace Clinic.Areas.LabTechnician.Controllers
                     labExam.ExamDate = newLabExam.ExamDate;
                     labExam.HeadLabNotes = newLabExam.HeadLabNotes;
                     labExam.AcceptDate = newLabExam.AcceptDate;
-                    labExam.Status = ExamStatus.InProgress;
+                    labExam.Status = ExamStatus.Completed;
 
                     labExam.AppointmentId = newLabExam.AppointmentId;
                     labExam.LabTechnicianId = newLabExam.LabTechnicianId;
                     labExam.HeadLabTechnicianId = newLabExam.HeadLabTechnicianId;
                     labExam.ExamSelectionId = newLabExam.ExamSelectionId;
-
-
-                    string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    var labTechnician = db.LabTechnicians.FirstOrDefault(lt => lt.ApplicationUserId == userId);
-                    if (labTechnician != null)
-                    {
-                        labExam.LabTechnicianId = labTechnician.LabTechnicianId;
-                        labExam.ExamDate = DateTime.Now;
-                    }
-                    else
-                    {
-                        labExam.LabTechnicianId = null;
-                        Console.WriteLine("error assigning labtechnician, labtechnician ID is null");
-                    }
 
 
 
@@ -129,27 +114,27 @@ namespace Clinic.Areas.LabTechnician.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
 
 
-                return View(model);
+
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult CancelExam(int labExamId, string cancelReason)
+        public IActionResult Disapprove(LabExamVM model)
         {
+            var labExamId = model.LabExam.LabExamId;
+            var notes = model.LabExam.HeadLabNotes;
+
             var labExam = db.LabExams.FirstOrDefault(x => x.LabExamId == labExamId);
             if (labExam != null)
             {
-                labExam.Status = ExamStatus.Canceled;
-                labExam.CancelationReason = cancelReason;
-                Console.WriteLine($"Canceling lab exam {labExamId} with reason: {cancelReason}");
+                labExam.Status = ExamStatus.Disapproved;
+                labExam.HeadLabNotes = notes;
                 db.SaveChanges();
             }
 
             return RedirectToAction(nameof(Index));
         }
-
-
     }
 }
