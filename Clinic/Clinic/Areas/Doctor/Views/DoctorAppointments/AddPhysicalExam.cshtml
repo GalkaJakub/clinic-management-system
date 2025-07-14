@@ -1,0 +1,39 @@
+﻿@model Clinic.Models.ViewModels.AddPhysicalExamVM
+
+@{
+    ViewData["Title"] = "Dodaj badanie fizykalne";
+}
+
+<h4>Dodaj badanie fizykalne</h4>
+
+<form method="post">
+    <input type="hidden" asp-for="AppointmentId" />
+    <input type="hidden" asp-for="AvailableExams" />
+
+    <div class="mb-3">
+        <label asp-for="ExamSelectionId" class="form-label">Rodzaj badania</label>
+        <select asp-for="ExamSelectionId" class="form-select">
+            <option value="">-- Wybierz badanie --</option>
+            @foreach (var exam in Model.AvailableExams)
+            {
+                <option value="@exam.Shortcut">@exam.Name (@exam.Shortcut)</option>
+            }
+        </select>
+        <span asp-validation-for="ExamSelectionId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Result" class="form-label">Wynik badania</label>
+        <textarea asp-for="Result" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Result" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-6 text-start">
+            <a asp-action="UpdateAppointment" asp-route-id="@Model.AppointmentId" class="btn btn-secondary">Anuluj</a>
+        </div>
+        <div class="col-6 text-end">
+            <button type="submit" class="btn btn-success">Zapisz badanie</button>
+        </div>
+    </div>
+</form>

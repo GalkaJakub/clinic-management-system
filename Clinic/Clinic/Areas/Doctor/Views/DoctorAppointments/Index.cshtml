@@ -1,32 +1,38 @@
 ﻿@model IEnumerable<Clinic.Models.Appointment>
+
 @{
     ViewData["Title"] = "Moje wizyty";
 }
 
-<h2>@ViewData["Title"]</h2>
+<div class="container mt-4">
+    <h3 class="mb-4">Moje wizyty</h3>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Data wizyty</th>
-            <th>Pacjent</th>
-            <th>Status</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var appt in Model)
-        {
-            <tr>
-                <td>@appt.AppointmentDate?.ToString("g")</td>
-                <td>@appt.Patient.Name @appt.Patient.Surname</td>
-                <td>@appt.Status</td>
-                <td>
-                    <a asp-area="Doctor" asp-controller="DoctorAppointments" asp-action="Details" asp-route-id="@appt.AppointmentId" class="btn btn-sm btn-primary">
-                        Szczegóły
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover table-striped align-middle border rounded mt-4 mb-4">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Pacjent</th>
+                    <th scope="col">Data wizyty</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var appointment in Model.OrderByDescending(a => a.AppointmentDate))
+                {
+                    <tr>
+                        <td>@appointment.Patient.Name @appointment.Patient.Surname</td>
+                        <td>@appointment.AppointmentDate?.ToString("g")</td>
+                        <td>@appointment.Status</td>
+                        <td>
+                            <a asp-action="UpdateAppointment" asp-route-id="@appointment.AppointmentId"
+                               class="btn btn-outline-primary btn-sm">
+                                Otwórz
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

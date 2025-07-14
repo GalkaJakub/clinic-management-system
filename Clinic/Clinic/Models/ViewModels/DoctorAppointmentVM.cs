@@ -10,9 +10,6 @@ namespace Clinic.Models.ViewModels
 
         public IEnumerable<ExamSelection> ExamSelections { get; set; }
 
-        // — Historia poprzednich wizyt —
-        public IEnumerable<Appointment> PreviousVisits { get; set; }
-
         [Display(Name = "Wybierz badanie laboratoryjne")]
         public string? NewLabExamType { get; set; }
 

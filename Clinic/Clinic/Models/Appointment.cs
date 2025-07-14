@@ -9,7 +9,6 @@ namespace Clinic.Models
         public int AppointmentId { get; set; }
         [Required]
         public string Description { get; set; }
-        public string? Diagnosis { get; set; }
         public AppointmentStatus Status { get; set; }
         public DateTime RegistrationDate { get; set; }
         [Required(ErrorMessage = "Appointment Date is required")]

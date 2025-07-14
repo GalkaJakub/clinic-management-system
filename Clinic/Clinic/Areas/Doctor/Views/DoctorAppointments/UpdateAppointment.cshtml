@@ -1,0 +1,102 @@
+﻿@model Clinic.Models.ViewModels.DoctorAppointmentVM
+@using Clinic.Enums
+
+@{
+    ViewData["Title"] = "Appointment";
+}
+
+<h3 class="mb-4">Edycja wizyty</h3>
+
+<form method="post" asp-action="UpdateAppointment">
+    <input type="hidden" asp-for="Appointment.AppointmentId" />
+    <input type="hidden" asp-for="Appointment.AppointmentDate" />
+    <input type="hidden" asp-for="@Model.ExamSelections" />
+
+    <div class="mb-3">
+        <label class="form-label">Pacjent</label>
+        <input class="form-control" value="@Model.Appointment.Patient.Name @Model.Appointment.Patient.Surname" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Appointment.Description" class="form-label">Notatki / diagnoza</label>
+        <textarea asp-for="Appointment.Description" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Appointment.Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Badania fizykalne</label>
+        @if (Model.Appointment.PhysicalExams != null && Model.Appointment.PhysicalExams.Any())
+        {
+            <ul class="list-group mb-2">
+                @foreach (var exam in Model.Appointment.PhysicalExams)
+                {
+                    <li class="list-group-item">
+                        <strong>@exam.ExamSelection?.Name (@exam.ExamSelection?.Shortcut)</strong><br />
+                        Wynik: @exam.Result
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p class="text-muted">Brak badań fizykalnych</p>
+        }
+
+        <a asp-action="AddPhysicalExam" asp-route-appointmentId="@Model.Appointment.AppointmentId"
+           class="btn btn-outline-primary btn-sm mt-2">
+            Dodaj badanie fizykalne
+        </a>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Badania laboratoryjne</label>
+        @if (Model.Appointment.LabExams != null && Model.Appointment.LabExams.Any())
+        {
+            <ul class="list-group mb-2">
+                @foreach (var lab in Model.Appointment.LabExams)
+                {
+                    <li class="list-group-item">
+                        <strong>@lab.ExamSelection?.Name (@lab.ExamSelection?.Shortcut)</strong><br />
+                        Status: @lab.Status <br />
+                        Data zgłoszenia: @lab.RequestDate.ToString("g")
+                        @if (!string.IsNullOrWhiteSpace(lab.DoctorsNotes))
+                        {
+                            <div><em>Notatki: @lab.DoctorsNotes</em></div>
+                        }
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p class="text-muted">Brak badań laboratoryjnych</p>
+        }
+
+        <a asp-action="AddLabExam" asp-route-appointmentId="@Model.Appointment.AppointmentId"
+           class="btn btn-outline-primary btn-sm mt-2">
+            Dodaj badanie laboratoryjne
+        </a>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Appointment.Status" class="form-label">Status wizyty</label>
+        <select asp-for="Appointment.Status" class="form-select">
+            @foreach (var status in Enum.GetValues(typeof(AppointmentStatus)))
+            {
+                <option value="@status" selected="@(Model.Appointment.Status == (AppointmentStatus)status)">
+                    @status
+                </option>
+            }
+        </select>
+        <span asp-validation-for="Appointment.Status" class="text-danger"></span>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-6 text-start">
+            <a asp-action="Index" class="btn btn-secondary">Powrót</a>
+        </div>
+        <div class="col-6 text-end">
+            <input type="submit" value="Zapisz zmiany" class="btn btn-success" />
+        </div>
+    </div>
+</form>
