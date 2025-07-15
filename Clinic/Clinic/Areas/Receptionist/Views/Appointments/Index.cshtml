@@ -32,7 +32,6 @@
             <thead class="table-light">
                 <tr>
                     <th scope="col">Patient</th>
-                    <th scope="col">Description</th>
                     <th scope="col">Doctor</th>
                     <th scope="col">Date</th>
                     <th scope="col">Status</th>
@@ -44,7 +43,6 @@
                 {
                     <tr>
                         <td>@(appointment.Patient.Name) @(appointment.Patient.Surname)</td>
-                            <td>@(appointment.Description.Length > 50 ? appointment.Description.Substring(0, 50) + "..." : appointment.Description)</td>
                         <td>@(appointment.Doctor.ApplicationUser.Name) @(appointment.Doctor.ApplicationUser.Surname)</td>
                         <td>@((appointment.AppointmentDate.Value.ToString("g")))</td>
                         <td>@appointment.Status</td>

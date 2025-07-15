@@ -147,6 +147,7 @@ namespace Clinic.Areas.Receptionist.Controllers
                     appointment.DoctorId = newAppointment.DoctorId;
                     appointment.Description = newAppointment.Description;
                     appointment.PatientId = newAppointment.PatientId;
+                    appointment.Status = newAppointment.Status;
                     db.SaveChanges();
                 }
                 return RedirectToAction(nameof(Index));

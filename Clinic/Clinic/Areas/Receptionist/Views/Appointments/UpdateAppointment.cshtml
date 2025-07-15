@@ -1,5 +1,6 @@
 ﻿@using Clinic.Models.ViewModels
 @model AppointmentVM
+@using Clinic.Enums
 
 <h1>Update appointment</h1>
 
@@ -7,7 +8,6 @@
     <input type="hidden" asp-for="Appointment.AppointmentId" />
     <input type="hidden" asp-for="Appointment.RegistrationDate" />
     <input type="hidden" asp-for="Appointment.ReceptionistId" />
-    <input type="hidden" asp-for="Appointment.Status" />
 
     <div class="mb-3">
         <label asp-for="Appointment.PatientId" class="form-label">Patient</label>
@@ -43,6 +43,19 @@
         <input type="datetime-local" asp-for="Appointment.AppointmentDate" class="form-control w-100" 
         min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
         <span asp-validation-for="Appointment.AppointmentDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Appointment.Status" class="form-label">Appointment Status</label>
+        <select asp-for="Appointment.Status" class="form-select">
+            @foreach (var status in Enum.GetValues(typeof(AppointmentStatus)))
+            {
+                <option value="@status" selected="@(Model.Appointment.Status == (AppointmentStatus)status)">
+                    @status
+                </option>
+            }
+        </select>
+        <span asp-validation-for="Appointment.Status" class="text-danger"></span>
     </div>
 
     <div class="row">
