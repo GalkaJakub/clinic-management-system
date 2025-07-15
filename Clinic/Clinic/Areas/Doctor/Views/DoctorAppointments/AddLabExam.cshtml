@@ -4,6 +4,9 @@
     ViewData["Title"] = "Add Laboratory Exam";
 }
 
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
 <h4>Dodaj badanie laboratoryjne</h4>
 
 <form method="post">
@@ -12,7 +15,7 @@
 
     <div class="mb-3">
         <label asp-for="ExamSelectionId" class="form-label">Exam Type</label>
-        <select asp-for="ExamSelectionId" class="form-select">
+        <select asp-for="ExamSelectionId" class="form-select" id="examSelect">
             <option value="">-- Select exam --</option>
             @foreach (var exam in Model.AvailableExams)
             {
@@ -37,3 +40,14 @@
         </div>
     </div>
 </form>
+
+<script>
+    new TomSelect("#examSelect", {
+        create: false,
+        sortField: {
+            field: "text",
+            direction: "asc"
+        },
+        placeholder: "Search for a exams..."
+    });
+</script>
